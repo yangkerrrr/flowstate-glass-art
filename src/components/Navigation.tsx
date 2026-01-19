@@ -14,17 +14,17 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "glass-strong py-3" : "py-6"
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
+        scrolled ? "w-[90%] max-w-4xl" : "w-[95%] max-w-5xl"
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className={`liquid-glass-pill px-6 py-3 flex items-center justify-between transition-all duration-500`}>
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 group">
           <div className="relative">
             <svg
               viewBox="0 0 32 32"
-              className="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110"
+              className="w-7 h-7 text-primary transition-transform duration-300 group-hover:scale-110"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -32,11 +32,11 @@ const Navigation = () => {
               <polygon points="16,4 28,24 16,20 4,24" />
             </svg>
           </div>
-          <span className="text-xl font-bold tracking-tight">FLOWSTATE</span>
+          <span className="text-lg font-bold tracking-tight">FLOWSTATE</span>
         </a>
 
         {/* Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {["Collection", "About", "Lookbook"].map((item) => (
             <a
               key={item}
@@ -50,7 +50,7 @@ const Navigation = () => {
         </div>
 
         {/* CTA */}
-        <Button variant="glass" size="sm" className="hidden md:flex">
+        <Button variant="hero" size="sm" className="hidden md:flex">
           Shop Now
         </Button>
 

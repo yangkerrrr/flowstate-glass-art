@@ -6,19 +6,21 @@ interface Product {
   nameJp: string;
   price: string;
   category: string;
+  accentColor: string;
 }
 
 const products: Product[] = [
-  { id: 1, name: "Flux Hoodie", nameJp: "フラックス", price: "¥18,500", category: "Outerwear" },
-  { id: 2, name: "Motion Tee", nameJp: "モーション", price: "¥8,900", category: "Essentials" },
-  { id: 3, name: "Drift Pants", nameJp: "ドリフト", price: "¥15,200", category: "Bottoms" },
-  { id: 4, name: "Wave Jacket", nameJp: "ウェーブ", price: "¥28,000", category: "Outerwear" },
+  { id: 1, name: "Flux Hoodie", nameJp: "フラックス", price: "¥18,500", category: "Outerwear", accentColor: "from-cyan-400/70 to-blue-500/50" },
+  { id: 2, name: "Motion Tee", nameJp: "モーション", price: "¥8,900", category: "Essentials", accentColor: "from-green-400/70 to-emerald-500/50" },
+  { id: 3, name: "Drift Pants", nameJp: "ドリフト", price: "¥15,200", category: "Bottoms", accentColor: "from-purple-400/70 to-pink-500/50" },
+  { id: 4, name: "Wave Jacket", nameJp: "ウェーブ", price: "¥28,000", category: "Outerwear", accentColor: "from-orange-400/70 to-amber-500/50" },
 ];
 
 const ProductShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,12 +39,37 @@ const ProductShowcase = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, -rect.top / rect.height + 0.5));
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section
       id="collection"
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
+      {/* Floating background decorations */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute -top-20 right-[20%] w-40 h-20 liquid-glass-pill opacity-30"
+          style={{ transform: `translateY(${scrollProgress * 100}px) rotate(-10deg)` }}
+        />
+        <div 
+          className="absolute bottom-40 left-[10%] w-24 h-24 liquid-glass rounded-full opacity-20"
+          style={{ transform: `translateY(${-scrollProgress * 80}px)` }}
+        />
+      </div>
+
       {/* Section header */}
       <div className="container mx-auto px-6 mb-20">
         <div
@@ -71,18 +98,19 @@ const ProductShowcase = () => {
               style={{ transitionDelay: `${index * 100 + 200}ms` }}
               onMouseEnter={() => setActiveIndex(index)}
             >
-              {/* Product card */}
-              <div className="glass glass-glow rounded-2xl p-6 h-80 flex flex-col justify-between transition-all duration-500 group-hover:scale-[1.02]">
-                {/* Visual placeholder */}
+              {/* Product card with new liquid glass style */}
+              <div className="liquid-glass h-80 flex flex-col justify-between p-6 transition-all duration-500 group-hover:scale-[1.02]">
+                {/* Visual placeholder with colored accent */}
                 <div className="flex-1 flex items-center justify-center relative">
-                  <div className="w-24 h-24 rounded-2xl bg-secondary/50 flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
-                    <span className="text-3xl font-bold text-primary/40">
+                  {/* Inner pill with color */}
+                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${product.accentColor} flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}>
+                    <span className="text-2xl font-bold text-white/90">
                       {product.name.charAt(0)}
                     </span>
                   </div>
                   
-                  {/* Floating accent */}
-                  <div className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-primary/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Floating accent ring */}
+                  <div className="absolute w-28 h-28 rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110" />
                 </div>
 
                 {/* Product info */}
