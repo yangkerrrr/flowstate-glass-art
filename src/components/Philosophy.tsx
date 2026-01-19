@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 const Philosophy = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,12 +22,50 @@ const Philosophy = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, -rect.top / rect.height + 0.5));
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section
       id="about"
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
+      {/* Layered background decorations */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Far layer */}
+        <div 
+          className="absolute top-20 right-[5%] w-64 h-32 liquid-glass-pill opacity-20"
+          style={{ transform: `translateY(${scrollProgress * 60}px) rotate(15deg)` }}
+        />
+        
+        {/* Mid layer - rainbow pill like reference */}
+        <div 
+          className="absolute bottom-32 left-[8%] w-48 h-16 liquid-glass-pill overflow-hidden opacity-30"
+          style={{ transform: `translateY(${-scrollProgress * 80}px)` }}
+        >
+          <div className="absolute inset-y-2 left-2 right-1/2 rounded-full bg-gradient-to-r from-blue-400/60 via-purple-400/60 to-pink-400/60" />
+        </div>
+
+        {/* Plus button decoration */}
+        <div 
+          className="absolute top-1/2 right-[15%] w-14 h-14 liquid-glass rounded-full flex items-center justify-center opacity-40"
+          style={{ transform: `translateY(${scrollProgress * 40}px)` }}
+        >
+          <span className="text-xl text-muted-foreground">+</span>
+        </div>
+      </div>
+
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Visual */}
@@ -35,11 +74,11 @@ const Philosophy = () => {
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
             }`}
           >
-            {/* Glass cards stack */}
+            {/* Glass cards stack with new style */}
             <div className="relative h-96 lg:h-[500px]">
-              <div className="absolute top-8 left-8 w-64 h-80 glass rounded-3xl transform -rotate-6 opacity-60" />
-              <div className="absolute top-4 left-4 w-64 h-80 glass rounded-3xl transform rotate-3 opacity-80" />
-              <div className="absolute top-0 left-0 w-64 h-80 glass-strong rounded-3xl flex flex-col items-center justify-center p-8">
+              <div className="absolute top-12 left-12 w-64 h-80 liquid-glass rounded-3xl transform -rotate-6 opacity-40" />
+              <div className="absolute top-6 left-6 w-64 h-80 liquid-glass rounded-3xl transform rotate-3 opacity-60" />
+              <div className="absolute top-0 left-0 w-64 h-80 liquid-glass rounded-3xl flex flex-col items-center justify-center p-8">
                 <div className="font-japanese text-6xl text-primary mb-4">流</div>
                 <div className="text-sm text-center text-muted-foreground">
                   Nagare — Flow
@@ -50,18 +89,20 @@ const Philosophy = () => {
                 </div>
               </div>
 
-              {/* Floating elements */}
-              <div className="absolute -bottom-4 right-0 w-48 h-48 float-delayed">
-                <div className="w-full h-full rounded-2xl glass flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-gradient">2024</div>
-                    <div className="text-xs text-muted-foreground mt-1">Collection</div>
-                  </div>
+              {/* Floating pill with green accent */}
+              <div 
+                className="absolute -bottom-4 right-8 w-48 h-20 liquid-glass-pill overflow-hidden float-delayed"
+                style={{ transform: `translateY(${-scrollProgress * 30}px)` }}
+              >
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-green-400/80 to-emerald-500/60" />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-right">
+                  <div className="text-lg font-bold text-foreground">2024</div>
+                  <div className="text-xs text-muted-foreground">Collection</div>
                 </div>
               </div>
 
               {/* Decorative ring */}
-              <div className="absolute -right-8 top-1/2 -translate-y-1/2 w-32 h-32 border border-primary/20 rounded-full animate-spin-slow" />
+              <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-32 h-32 border border-primary/20 rounded-full animate-spin-slow" />
             </div>
           </div>
 
@@ -94,21 +135,21 @@ const Philosophy = () => {
               </p>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 mt-12">
+            {/* Stats in liquid glass pills */}
+            <div className="grid grid-cols-3 gap-4 mt-12">
               {[
-                { value: "100%", label: "Cotton" },
-                { value: "Zero", label: "Waste" },
-                { value: "∞", label: "Motion" },
+                { value: "100%", label: "Cotton", color: "from-cyan-400/60 to-blue-500/40" },
+                { value: "Zero", label: "Waste", color: "from-green-400/60 to-emerald-500/40" },
+                { value: "∞", label: "Motion", color: "from-purple-400/60 to-pink-500/40" },
               ].map((stat, index) => (
                 <div
                   key={stat.label}
-                  className={`text-center transition-all duration-700 ${
+                  className={`liquid-glass-pill py-4 px-2 text-center transition-all duration-700 ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   }`}
                   style={{ transitionDelay: `${index * 100 + 600}ms` }}
                 >
-                  <div className="text-2xl md:text-3xl font-bold text-primary">
+                  <div className="text-xl md:text-2xl font-bold text-primary">
                     {stat.value}
                   </div>
                   <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">
