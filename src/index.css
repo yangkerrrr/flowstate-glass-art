@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core palette - Deep navy with luminous accents */
+    --background: 220 25% 6%;
+    --foreground: 210 20% 95%;
+
+    --card: 220 25% 10%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 220 25% 8%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 190 100% 70%;
+    --primary-foreground: 220 25% 6%;
+
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 210 20% 90%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 210 15% 55%;
+
+    --accent: 190 80% 60%;
+    --accent-foreground: 220 25% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 15%;
+    --ring: 190 100% 70%;
+
+    --radius: 1.5rem;
+
+    /* Enhanced glass tokens */
+    --glass-bg: 220 20% 95% / 0.08;
+    --glass-bg-strong: 220 20% 98% / 0.12;
+    --glass-border: 220 20% 100% / 0.2;
+    --glass-border-outer: 220 20% 100% / 0.08;
+    --glass-shine: 220 20% 100% / 0.4;
+    --glass-shadow: 220 40% 4% / 0.4;
+
+    /* Sidebar (keeping for compatibility) */
+    --sidebar-background: 220 25% 8%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 190 100% 70%;
+    --sidebar-primary-foreground: 220 25% 6%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 190 100% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    @apply tracking-tight;
+  }
+
+  .font-japanese {
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+}
+
+@layer components {
+  /* New Liquid Glass Effect - Apple Vision Pro style */
+  .liquid-glass {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--glass-bg-strong)),
+      hsl(var(--glass-bg))
+    );
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-radius: var(--radius);
+    
+    /* Thick soft outer border */
+    box-shadow:
+      /* Outer soft glow */
+      0 0 0 1px hsl(var(--glass-border-outer)),
+      0 8px 32px hsl(var(--glass-shadow)),
+      /* Inner highlight at top */
+      inset 0 1px 1px hsl(var(--glass-shine)),
+      /* Soft outer shadow for depth */
+      0 20px 50px -10px hsl(220 40% 4% / 0.5);
+    
+    /* Inner border effect */
+    border: 1.5px solid hsl(var(--glass-border));
+  }
+
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      hsl(220 20% 100% / 0.3),
+      hsl(220 20% 100% / 0.05),
+      hsl(220 20% 100% / 0.1)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Pill-shaped liquid glass */
+  .liquid-glass-pill {
+    @apply liquid-glass;
+    border-radius: 100px;
+  }
+
+  /* Glass with colored accent inside */
+  .liquid-glass-accent {
+    @apply liquid-glass;
+    overflow: hidden;
+  }
+
+  .liquid-glass-accent::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: calc(var(--radius) - 4px);
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(190 100% 60% / 0.1));
+    pointer-events: none;
+  }
+
+  /* Legacy glass for backwards compatibility */
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: 0 8px 32px hsl(var(--glass-shadow));
+  }
+
+  .glass-strong {
+    background: hsl(var(--glass-bg-strong));
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1.5px solid hsl(var(--glass-border));
+    box-shadow: 
+      0 8px 32px hsl(var(--glass-shadow)),
+      inset 0 1px 1px hsl(var(--glass-shine));
+  }
+
+  .glass-glow {
+    position: relative;
+  }
+
+  .glass-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.4), transparent 50%, hsl(330 80% 60% / 0.2));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .glass-glow:hover::before {
+    opacity: 1;
+  }
+
+  /* Text gradients */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--foreground)), hsl(190 100% 80%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 40px hsl(190 100% 70% / 0.4);
+  }
+
+  /* Floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .float-delayed {
+    animation: float 6s ease-in-out infinite 2s;
+  }
+
+  .float-slow {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  /* Depth layers */
+  .layer-1 {
+    transform: translateZ(0);
+  }
+  
+  .layer-2 {
+    transform: translateZ(20px);
+  }
+  
+  .layer-3 {
+    transform: translateZ(40px);
+  }
+}
+
+@layer utilities {
+  .hero-gradient {
+    background: 
+      radial-gradient(ellipse at 30% 20%, hsl(190 100% 60% / 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, hsl(280 80% 50% / 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, hsl(220 30% 8%) 0%, hsl(220 25% 4%) 100%);
+  }
+
+  .flow-gradient {
+    background: linear-gradient(135deg, hsl(190 100% 70% / 0.2), hsl(220 80% 60% / 0.1), hsl(280 60% 50% / 0.1));
+  }
+
+  /* Reveal animations */
+  .reveal {
+    animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .reveal-delay-1 { animation-delay: 0.1s; }
+  .reveal-delay-2 { animation-delay: 0.2s; }
+  .reveal-delay-3 { animation-delay: 0.3s; }
+  .reveal-delay-4 { animation-delay: 0.4s; }
+
+  /* Liquid morph */
+  .liquid-morph {
+    animation: liquidMorph 8s ease-in-out infinite;
+  }
+
+  /* Parallax depth */
+  .perspective-container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  .parallax-slow {
+    transform: translateZ(-100px) scale(1.1);
+  }
+
+  .parallax-medium {
+    transform: translateZ(0);
+  }
+
+  .parallax-fast {
+    transform: translateZ(100px) scale(0.9);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes liquidMorph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  50% {
+    border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%;
+  }
+  75% {
+    border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(190 100% 70% / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(190 100% 70% / 0.4);
+  }
+}
+
+/* Scroll smooth */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
