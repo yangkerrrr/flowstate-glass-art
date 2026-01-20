@@ -1,5 +1,3 @@
-import solLogo from "@/assets/sol-logo.png";
-
 const Footer = () => {
   return (
     <footer className="py-20 border-t border-border/50">
@@ -7,8 +5,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <img src={solLogo} alt="SOL" className="h-8 w-auto" />
+            <div className="flex items-center gap-1 mb-4">
+              <span className="text-3xl font-black tracking-tight text-primary">SOL</span>
             </div>
             <p className="text-muted-foreground text-sm max-w-xs">
               Minimal design. Maximum warmth. Crafted for those who
