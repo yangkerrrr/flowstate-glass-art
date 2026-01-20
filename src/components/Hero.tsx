@@ -21,7 +21,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[150vh] overflow-hidden">
+    <section className="relative min-h-[120vh] overflow-hidden">
       {/* Background with depth layers */}
       <div className="absolute inset-0 hero-gradient" />
 
@@ -135,7 +135,7 @@ const Hero = () => {
 
             {/* Right - 3D Model */}
             <div 
-              className="relative h-[600px] lg:h-[700px]"
+              className="relative h-[450px] lg:h-[500px]"
               style={{
                 transform: `translateY(${-scrollProgress * 50}px)`,
               }}

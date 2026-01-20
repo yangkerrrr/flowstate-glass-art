@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Environment, MeshTransmissionMaterial } from "@react-three/drei";
+import { Float, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 interface ModelProps {
@@ -8,118 +8,111 @@ interface ModelProps {
 }
 
 const Hoodie = ({ scrollProgress }: ModelProps) => {
-  const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (groupRef.current) {
-      // Rotate based on scroll
       groupRef.current.rotation.y = scrollProgress * Math.PI * 2;
-      groupRef.current.rotation.x = Math.sin(scrollProgress * Math.PI) * 0.3;
+      groupRef.current.rotation.x = Math.sin(scrollProgress * Math.PI) * 0.2;
     }
+  });
+
+  // Fabric material - realistic hoodie look
+  const fabricMaterial = new THREE.MeshStandardMaterial({
+    color: "#1a1f35",
+    roughness: 0.85,
+    metalness: 0.05,
+  });
+
+  const accentMaterial = new THREE.MeshStandardMaterial({
+    color: "#66d9ff",
+    emissive: "#66d9ff",
+    emissiveIntensity: 0.4,
+    metalness: 0.6,
+    roughness: 0.3,
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-        {/* Main hoodie body - abstract geometric representation */}
-        <mesh ref={meshRef} position={[0, 0.3, 0]}>
-          <boxGeometry args={[2, 2.5, 1.2]} />
-          <MeshTransmissionMaterial
-            backside
-            samples={16}
-            resolution={512}
-            transmission={0.95}
-            roughness={0.1}
-            thickness={0.5}
-            ior={1.5}
-            chromaticAberration={0.06}
-            anisotropy={0.3}
-            distortion={0.2}
-            distortionScale={0.3}
-            temporalDistortion={0.2}
-            color="#1a1f35"
-          />
+      <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.3}>
+        {/* Main body - torso */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[1.8, 2.2, 0.9]} />
+          <primitive object={fabricMaterial} attach="material" />
         </mesh>
 
-        {/* Hood */}
-        <mesh position={[0, 2, 0]}>
-          <sphereGeometry args={[0.9, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <MeshTransmissionMaterial
-            backside
-            samples={16}
-            resolution={512}
-            transmission={0.9}
-            roughness={0.15}
-            thickness={0.3}
-            ior={1.4}
-            chromaticAberration={0.04}
-            color="#1a1f35"
-          />
+        {/* Hood - back part */}
+        <mesh position={[0, 1.4, -0.2]}>
+          <sphereGeometry args={[0.7, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <primitive object={fabricMaterial.clone()} attach="material" />
         </mesh>
 
-        {/* Logo accent - triangle */}
-        <mesh position={[0, 0.8, 0.65]} rotation={[0, 0, Math.PI]}>
-          <coneGeometry args={[0.3, 0.4, 3]} />
+        {/* Hood opening rim */}
+        <mesh position={[0, 1.1, 0.35]} rotation={[0.3, 0, 0]}>
+          <torusGeometry args={[0.5, 0.08, 8, 16, Math.PI]} />
+          <primitive object={fabricMaterial.clone()} attach="material" />
+        </mesh>
+
+        {/* Collar/neckline */}
+        <mesh position={[0, 0.9, 0.3]}>
+          <cylinderGeometry args={[0.35, 0.4, 0.3, 16]} />
+          <primitive object={fabricMaterial.clone()} attach="material" />
+        </mesh>
+
+        {/* Left sleeve */}
+        <mesh position={[-1.2, 0.3, 0]} rotation={[0, 0, 0.5]}>
+          <cylinderGeometry args={[0.28, 0.35, 1.5, 12]} />
+          <primitive object={fabricMaterial.clone()} attach="material" />
+        </mesh>
+
+        {/* Right sleeve */}
+        <mesh position={[1.2, 0.3, 0]} rotation={[0, 0, -0.5]}>
+          <cylinderGeometry args={[0.28, 0.35, 1.5, 12]} />
+          <primitive object={fabricMaterial.clone()} attach="material" />
+        </mesh>
+
+        {/* Kangaroo pocket */}
+        <mesh position={[0, -0.4, 0.48]}>
+          <boxGeometry args={[1.2, 0.5, 0.1]} />
+          <primitive object={fabricMaterial.clone()} attach="material" />
+        </mesh>
+
+        {/* Logo - triangle accent */}
+        <mesh position={[0, 0.4, 0.5]} rotation={[0, 0, Math.PI]}>
+          <coneGeometry args={[0.2, 0.3, 3]} />
+          <primitive object={accentMaterial} attach="material" />
+        </mesh>
+
+        {/* Drawstrings */}
+        <mesh position={[-0.15, 0.7, 0.45]}>
+          <cylinderGeometry args={[0.015, 0.015, 0.6, 6]} />
+          <primitive object={accentMaterial.clone()} attach="material" />
+        </mesh>
+        <mesh position={[0.15, 0.7, 0.45]}>
+          <cylinderGeometry args={[0.015, 0.015, 0.6, 6]} />
+          <primitive object={accentMaterial.clone()} attach="material" />
+        </mesh>
+      </Float>
+
+      {/* Floating accent - simplified */}
+      <Float speed={2} rotationIntensity={0.3} floatIntensity={0.6}>
+        <mesh position={[2, 1, -0.5]}>
+          <icosahedronGeometry args={[0.2, 0]} />
           <meshStandardMaterial
             color="#66d9ff"
             emissive="#66d9ff"
-            emissiveIntensity={0.5}
-            metalness={0.8}
-            roughness={0.2}
-          />
-        </mesh>
-
-        {/* Sleeves */}
-        <mesh position={[-1.3, 0.2, 0]} rotation={[0, 0, 0.4]}>
-          <cylinderGeometry args={[0.35, 0.4, 1.8, 16]} />
-          <MeshTransmissionMaterial
-            backside
-            samples={8}
-            resolution={256}
-            transmission={0.9}
-            roughness={0.15}
-            thickness={0.2}
-            color="#1a1f35"
-          />
-        </mesh>
-        <mesh position={[1.3, 0.2, 0]} rotation={[0, 0, -0.4]}>
-          <cylinderGeometry args={[0.35, 0.4, 1.8, 16]} />
-          <MeshTransmissionMaterial
-            backside
-            samples={8}
-            resolution={256}
-            transmission={0.9}
-            roughness={0.15}
-            thickness={0.2}
-            color="#1a1f35"
+            emissiveIntensity={0.6}
           />
         </mesh>
       </Float>
 
-      {/* Floating accent elements */}
-      <Float speed={3} rotationIntensity={0.5} floatIntensity={1}>
-        <mesh position={[2.5, 1.5, -1]}>
-          <icosahedronGeometry args={[0.3, 0]} />
-          <meshStandardMaterial
-            color="#66d9ff"
-            emissive="#66d9ff"
-            emissiveIntensity={0.8}
-            metalness={0.9}
-            roughness={0.1}
-          />
-        </mesh>
-      </Float>
-
-      <Float speed={2.5} rotationIntensity={0.3} floatIntensity={0.8}>
-        <mesh position={[-2.5, -0.5, -0.5]}>
-          <octahedronGeometry args={[0.25, 0]} />
+      <Float speed={1.8} rotationIntensity={0.2} floatIntensity={0.5}>
+        <mesh position={[-2, -0.3, -0.3]}>
+          <octahedronGeometry args={[0.15, 0]} />
           <meshStandardMaterial
             color="#ff66b2"
             emissive="#ff66b2"
-            emissiveIntensity={0.6}
-            metalness={0.9}
-            roughness={0.1}
+            emissiveIntensity={0.5}
           />
         </mesh>
       </Float>
@@ -134,30 +127,19 @@ interface HoodieModelProps {
 const HoodieModel = ({ scrollProgress }: HoodieModelProps) => {
   return (
     <Canvas
-      camera={{ position: [0, 0, 8], fov: 45 }}
+      camera={{ position: [0, 0, 6], fov: 40 }}
       style={{ background: "transparent" }}
-      gl={{ alpha: true, antialias: true }}
+      gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
+      dpr={[1, 1.5]}
     >
-      <ambientLight intensity={0.4} />
-      <spotLight
-        position={[10, 10, 10]}
-        angle={0.15}
-        penumbra={1}
-        intensity={1}
-        color="#66d9ff"
-      />
-      <spotLight
-        position={[-10, -10, -10]}
-        angle={0.15}
-        penumbra={1}
-        intensity={0.5}
-        color="#ff66b2"
-      />
-      <pointLight position={[0, 5, 5]} intensity={0.5} color="#ffffff" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
+      <pointLight position={[-3, 2, 4]} intensity={0.4} color="#66d9ff" />
+      <pointLight position={[3, -2, 2]} intensity={0.3} color="#ff66b2" />
       
       <Hoodie scrollProgress={scrollProgress} />
       
-      <Environment preset="city" />
+      <Environment preset="city" environmentIntensity={0.3} />
     </Canvas>
   );
 };
