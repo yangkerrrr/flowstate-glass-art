@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import solLogo from "@/assets/sol-logo.png";
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -21,12 +20,8 @@ const Navigation = () => {
     >
       <div className={`liquid-glass-pill px-6 py-3 flex items-center justify-between transition-all duration-500`}>
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 group">
-          <img 
-            src={solLogo} 
-            alt="SOL" 
-            className="h-6 w-auto transition-transform duration-300 group-hover:scale-110"
-          />
+        <a href="#" className="flex items-center gap-1 group transition-transform duration-300 hover:scale-105">
+          <span className="text-2xl font-black tracking-tight text-primary">SOL</span>
         </a>
 
         {/* Navigation Links */}
