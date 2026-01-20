@@ -6,54 +6,54 @@
 
 @layer base {
   :root {
-    /* Core palette - Deep navy with luminous accents */
-    --background: 220 25% 6%;
-    --foreground: 210 20% 95%;
+    /* Core palette - Deep black with warm golden accents */
+    --background: 30 5% 5%;
+    --foreground: 40 25% 95%;
 
-    --card: 220 25% 10%;
-    --card-foreground: 210 20% 95%;
+    --card: 30 8% 9%;
+    --card-foreground: 40 25% 95%;
 
-    --popover: 220 25% 8%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 30 6% 7%;
+    --popover-foreground: 40 25% 95%;
 
-    --primary: 190 100% 70%;
-    --primary-foreground: 220 25% 6%;
+    --primary: 42 100% 62%;
+    --primary-foreground: 30 5% 5%;
 
-    --secondary: 220 20% 15%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 30 10% 14%;
+    --secondary-foreground: 40 20% 88%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 210 15% 55%;
+    --muted: 30 8% 16%;
+    --muted-foreground: 35 12% 50%;
 
-    --accent: 190 80% 60%;
-    --accent-foreground: 220 25% 6%;
+    --accent: 38 90% 55%;
+    --accent-foreground: 30 5% 5%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 15%;
-    --ring: 190 100% 70%;
+    --border: 30 10% 18%;
+    --input: 30 10% 14%;
+    --ring: 42 100% 62%;
 
     --radius: 1.5rem;
 
-    /* Enhanced glass tokens */
-    --glass-bg: 220 20% 95% / 0.08;
-    --glass-bg-strong: 220 20% 98% / 0.12;
-    --glass-border: 220 20% 100% / 0.2;
-    --glass-border-outer: 220 20% 100% / 0.08;
-    --glass-shine: 220 20% 100% / 0.4;
-    --glass-shadow: 220 40% 4% / 0.4;
+    /* Enhanced glass tokens - warm tint */
+    --glass-bg: 40 20% 95% / 0.06;
+    --glass-bg-strong: 40 20% 98% / 0.10;
+    --glass-border: 40 30% 100% / 0.18;
+    --glass-border-outer: 40 20% 100% / 0.06;
+    --glass-shine: 42 40% 100% / 0.35;
+    --glass-shadow: 30 40% 3% / 0.5;
 
     /* Sidebar (keeping for compatibility) */
-    --sidebar-background: 220 25% 8%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 190 100% 70%;
-    --sidebar-primary-foreground: 220 25% 6%;
-    --sidebar-accent: 220 20% 15%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 220 20% 18%;
-    --sidebar-ring: 190 100% 70%;
+    --sidebar-background: 30 6% 7%;
+    --sidebar-foreground: 40 20% 88%;
+    --sidebar-primary: 42 100% 62%;
+    --sidebar-primary-foreground: 30 5% 5%;
+    --sidebar-accent: 30 10% 14%;
+    --sidebar-accent-foreground: 40 20% 88%;
+    --sidebar-border: 30 8% 16%;
+    --sidebar-ring: 42 100% 62%;
   }
 }
 
@@ -141,7 +141,7 @@
     position: absolute;
     inset: 4px;
     border-radius: calc(var(--radius) - 4px);
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(190 100% 60% / 0.1));
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(38 90% 55% / 0.1));
     pointer-events: none;
   }
 
@@ -173,7 +173,7 @@
     position: absolute;
     inset: -2px;
     border-radius: inherit;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.4), transparent 50%, hsl(330 80% 60% / 0.2));
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.4), transparent 50%, hsl(25 80% 50% / 0.2));
     z-index: -1;
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -185,14 +185,14 @@
 
   /* Text gradients */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--foreground)), hsl(190 100% 80%));
+    background: linear-gradient(135deg, hsl(var(--foreground)), hsl(42 100% 75%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-glow {
-    text-shadow: 0 0 40px hsl(190 100% 70% / 0.4);
+    text-shadow: 0 0 40px hsl(42 100% 62% / 0.4);
   }
 
   /* Floating animation */
@@ -225,13 +225,13 @@
 @layer utilities {
   .hero-gradient {
     background: 
-      radial-gradient(ellipse at 30% 20%, hsl(190 100% 60% / 0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at 70% 80%, hsl(280 80% 50% / 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, hsl(220 30% 8%) 0%, hsl(220 25% 4%) 100%);
+      radial-gradient(ellipse at 30% 20%, hsl(42 100% 55% / 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, hsl(25 80% 45% / 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, hsl(30 10% 7%) 0%, hsl(30 5% 3%) 100%);
   }
 
   .flow-gradient {
-    background: linear-gradient(135deg, hsl(190 100% 70% / 0.2), hsl(220 80% 60% / 0.1), hsl(280 60% 50% / 0.1));
+    background: linear-gradient(135deg, hsl(42 100% 62% / 0.2), hsl(38 80% 50% / 0.1), hsl(25 60% 45% / 0.1));
   }
 
   /* Reveal animations */
@@ -305,10 +305,10 @@
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px hsl(190 100% 70% / 0.2);
+    box-shadow: 0 0 20px hsl(42 100% 62% / 0.2);
   }
   50% {
-    box-shadow: 0 0 40px hsl(190 100% 70% / 0.4);
+    box-shadow: 0 0 40px hsl(42 100% 62% / 0.4);
   }
 }
 

@@ -19,14 +19,14 @@ const Hoodie = ({ scrollProgress }: ModelProps) => {
 
   // Fabric material - realistic hoodie look
   const fabricMaterial = new THREE.MeshStandardMaterial({
-    color: "#1a1f35",
+    color: "#1a1510",
     roughness: 0.85,
     metalness: 0.05,
   });
 
   const accentMaterial = new THREE.MeshStandardMaterial({
-    color: "#66d9ff",
-    emissive: "#66d9ff",
+    color: "#f5b742",
+    emissive: "#f5b742",
     emissiveIntensity: 0.4,
     metalness: 0.6,
     roughness: 0.3,
@@ -99,8 +99,8 @@ const Hoodie = ({ scrollProgress }: ModelProps) => {
         <mesh position={[2, 1, -0.5]}>
           <icosahedronGeometry args={[0.2, 0]} />
           <meshStandardMaterial
-            color="#66d9ff"
-            emissive="#66d9ff"
+            color="#f5b742"
+            emissive="#f5b742"
             emissiveIntensity={0.6}
           />
         </mesh>
@@ -110,8 +110,8 @@ const Hoodie = ({ scrollProgress }: ModelProps) => {
         <mesh position={[-2, -0.3, -0.3]}>
           <octahedronGeometry args={[0.15, 0]} />
           <meshStandardMaterial
-            color="#ff66b2"
-            emissive="#ff66b2"
+            color="#d4883a"
+            emissive="#d4883a"
             emissiveIntensity={0.5}
           />
         </mesh>
@@ -134,8 +134,8 @@ const HoodieModel = ({ scrollProgress }: HoodieModelProps) => {
     >
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
-      <pointLight position={[-3, 2, 4]} intensity={0.4} color="#66d9ff" />
-      <pointLight position={[3, -2, 2]} intensity={0.3} color="#ff66b2" />
+      <pointLight position={[-3, 2, 4]} intensity={0.4} color="#f5b742" />
+      <pointLight position={[3, -2, 2]} intensity={0.3} color="#d4883a" />
       
       <Hoodie scrollProgress={scrollProgress} />
       

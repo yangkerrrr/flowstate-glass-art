@@ -10,10 +10,10 @@ interface Product {
 }
 
 const products: Product[] = [
-  { id: 1, name: "Flux Hoodie", nameJp: "フラックス", price: "¥18,500", category: "Outerwear", accentColor: "from-cyan-400/70 to-blue-500/50" },
-  { id: 2, name: "Motion Tee", nameJp: "モーション", price: "¥8,900", category: "Essentials", accentColor: "from-green-400/70 to-emerald-500/50" },
-  { id: 3, name: "Drift Pants", nameJp: "ドリフト", price: "¥15,200", category: "Bottoms", accentColor: "from-purple-400/70 to-pink-500/50" },
-  { id: 4, name: "Wave Jacket", nameJp: "ウェーブ", price: "¥28,000", category: "Outerwear", accentColor: "from-orange-400/70 to-amber-500/50" },
+  { id: 1, name: "Sol Hoodie", nameJp: "ソル", price: "¥18,500", category: "Outerwear", accentColor: "from-amber-400/70 to-yellow-500/50" },
+  { id: 2, name: "Dawn Tee", nameJp: "夜明け", price: "¥8,900", category: "Essentials", accentColor: "from-orange-400/70 to-amber-500/50" },
+  { id: 3, name: "Glow Pants", nameJp: "輝き", price: "¥15,200", category: "Bottoms", accentColor: "from-yellow-400/70 to-orange-500/50" },
+  { id: 4, name: "Radiant Jacket", nameJp: "光", price: "¥28,000", category: "Outerwear", accentColor: "from-amber-500/70 to-yellow-400/50" },
 ];
 
 const ProductShowcase = () => {

@@ -1,3 +1,5 @@
+import solLogo from "@/assets/sol-logo.png";
+
 const Footer = () => {
   return (
     <footer className="py-20 border-t border-border/50">
@@ -6,23 +8,14 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <svg
-                viewBox="0 0 32 32"
-                className="w-8 h-8 text-primary"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <polygon points="16,4 28,24 16,20 4,24" />
-              </svg>
-              <span className="text-xl font-bold tracking-tight">FLOWSTATE</span>
+              <img src={solLogo} alt="SOL" className="h-8 w-auto" />
             </div>
             <p className="text-muted-foreground text-sm max-w-xs">
-              Minimal design. Maximum intent. Crafted for those who exist in
-              perpetual motion.
+              Minimal design. Maximum warmth. Crafted for those who
+              shine from within.
             </p>
             <div className="font-japanese text-sm text-primary mt-4">
-              流れ状態
+              太陽
             </div>
           </div>
 
@@ -68,7 +61,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2024 Flowstate. All rights reserved.
+            © 2024 SOL. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Shipping"].map((item) => (
