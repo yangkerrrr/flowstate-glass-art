@@ -49,12 +49,12 @@ const Philosophy = () => {
           style={{ transform: `translateY(${scrollProgress * 60}px) rotate(15deg)` }}
         />
         
-        {/* Mid layer - rainbow pill like reference */}
+        {/* Mid layer - warm gradient pill like reference */}
         <div 
           className="absolute bottom-32 left-[8%] w-48 h-16 liquid-glass-pill overflow-hidden opacity-30"
           style={{ transform: `translateY(${-scrollProgress * 80}px)` }}
         >
-          <div className="absolute inset-y-2 left-2 right-1/2 rounded-full bg-gradient-to-r from-blue-400/60 via-purple-400/60 to-pink-400/60" />
+          <div className="absolute inset-y-2 left-2 right-1/2 rounded-full bg-gradient-to-r from-amber-400/60 via-orange-400/60 to-yellow-400/60" />
         </div>
 
         {/* Plus button decoration */}
@@ -79,22 +79,22 @@ const Philosophy = () => {
               <div className="absolute top-12 left-12 w-64 h-80 liquid-glass rounded-3xl transform -rotate-6 opacity-40" />
               <div className="absolute top-6 left-6 w-64 h-80 liquid-glass rounded-3xl transform rotate-3 opacity-60" />
               <div className="absolute top-0 left-0 w-64 h-80 liquid-glass rounded-3xl flex flex-col items-center justify-center p-8">
-                <div className="font-japanese text-6xl text-primary mb-4">流</div>
+                <div className="font-japanese text-6xl text-primary mb-4">陽</div>
                 <div className="text-sm text-center text-muted-foreground">
-                  Nagare — Flow
+                  Yō — Radiance
                 </div>
                 <div className="mt-8 w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                 <div className="mt-8 text-xs text-muted-foreground text-center leading-relaxed">
-                  Embrace the state of flow, where movement becomes meditation
+                  Embrace the warmth within, where light becomes expression
                 </div>
               </div>
 
-              {/* Floating pill with green accent */}
+              {/* Floating pill with golden accent */}
               <div 
                 className="absolute -bottom-4 right-8 w-48 h-20 liquid-glass-pill overflow-hidden float-delayed"
                 style={{ transform: `translateY(${-scrollProgress * 30}px)` }}
               >
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-green-400/80 to-emerald-500/60" />
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-amber-400/80 to-orange-500/60" />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 text-right">
                   <div className="text-lg font-bold text-foreground">2024</div>
                   <div className="text-xs text-muted-foreground">Collection</div>
@@ -119,9 +119,9 @@ const Philosophy = () => {
 
             <div className="space-y-6 text-muted-foreground leading-relaxed">
               <p>
-                Flowstate exists at the intersection of Japanese minimalism and
-                contemporary streetwear. We believe clothing should move with
-                you, not against you.
+                SOL exists at the intersection of Japanese minimalism and
+                contemporary streetwear. We believe clothing should radiate
+                warmth, not just style.
               </p>
               <p>
                 Each piece is designed with intention—every seam, every cut,
@@ -130,7 +130,7 @@ const Philosophy = () => {
               </p>
               <p>
                 No faces. No personalities. Just pure design. Our garments
-                speak for themselves, allowing you to project your own identity
+                speak for themselves, allowing you to shine your own light
                 onto the canvas we provide.
               </p>
             </div>
@@ -138,9 +138,9 @@ const Philosophy = () => {
             {/* Stats in liquid glass pills */}
             <div className="grid grid-cols-3 gap-4 mt-12">
               {[
-                { value: "100%", label: "Cotton", color: "from-cyan-400/60 to-blue-500/40" },
-                { value: "Zero", label: "Waste", color: "from-green-400/60 to-emerald-500/40" },
-                { value: "∞", label: "Motion", color: "from-purple-400/60 to-pink-500/40" },
+                { value: "100%", label: "Cotton", color: "from-amber-400/60 to-yellow-500/40" },
+                { value: "Zero", label: "Waste", color: "from-orange-400/60 to-amber-500/40" },
+                { value: "∞", label: "Light", color: "from-yellow-400/60 to-orange-500/40" },
               ].map((stat, index) => (
                 <div
                   key={stat.label}

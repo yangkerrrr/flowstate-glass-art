@@ -57,10 +57,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        flow: {
-          cyan: "hsl(200 100% 70%)",
-          navy: "hsl(220 25% 6%)",
-          slate: "hsl(220 20% 15%)",
+        sol: {
+          gold: "hsl(42 100% 62%)",
+          amber: "hsl(38 90% 55%)",
+          dark: "hsl(30 5% 5%)",
+          warm: "hsl(30 8% 12%)",
         },
       },
       fontFamily: {
@@ -110,7 +111,7 @@ export default {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "flow-gradient": "linear-gradient(135deg, hsl(200 100% 70% / 0.2), hsl(220 80% 60% / 0.1), hsl(260 60% 50% / 0.1))",
+        "sol-gradient": "linear-gradient(135deg, hsl(42 100% 62% / 0.2), hsl(38 80% 55% / 0.1), hsl(25 60% 45% / 0.1))",
       },
     },
   },

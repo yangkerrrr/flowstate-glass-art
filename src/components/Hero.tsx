@@ -1,6 +1,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import HoodieModel from "./HoodieModel";
+import solLogo from "@/assets/sol-logo.png";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,14 +31,14 @@ const Hero = () => {
         <div 
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl"
           style={{
-            background: 'radial-gradient(circle, hsl(190 100% 60% / 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsl(42 100% 55% / 0.12) 0%, transparent 70%)',
             transform: `translateY(${scrollProgress * 100}px)`,
           }}
         />
         <div 
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl"
           style={{
-            background: 'radial-gradient(circle, hsl(280 80% 60% / 0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsl(25 80% 45% / 0.08) 0%, transparent 70%)',
             transform: `translateY(${scrollProgress * 50}px)`,
           }}
         />
@@ -69,9 +70,9 @@ const Hero = () => {
         <div 
           className="absolute top-[60%] right-[8%] w-10 h-10 rounded-full opacity-60"
           style={{ 
-            background: 'linear-gradient(135deg, hsl(150 80% 50% / 0.8), hsl(180 80% 50% / 0.6))',
+            background: 'linear-gradient(135deg, hsl(42 100% 60% / 0.8), hsl(38 90% 50% / 0.6))',
             transform: `translateY(${-scrollProgress * 90}px)`,
-            boxShadow: '0 8px 32px hsl(160 80% 50% / 0.3)'
+            boxShadow: '0 8px 32px hsl(42 100% 55% / 0.3)'
           }}
         />
       </div>
@@ -89,7 +90,7 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "100ms" }}
               >
-                流れ状態 — State of Flow
+                太陽 — The Sun
               </div>
 
               {/* Main headline */}
@@ -99,11 +100,11 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "200ms" }}
               >
-                <span className="text-gradient">Move</span>
+                <span className="text-gradient">Radiate</span>
                 <br />
-                <span className="text-foreground">Without</span>
+                <span className="text-foreground">Your</span>
                 <br />
-                <span className="text-muted-foreground">Limits</span>
+                <span className="text-muted-foreground">Energy</span>
               </h1>
 
               {/* Subheadline */}
@@ -113,8 +114,8 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "300ms" }}
               >
-                Minimal design. Maximum intent. Apparel crafted for those who exist
-                in perpetual motion.
+                Minimal design. Maximum warmth. Apparel crafted for those who
+                shine from within.
               </p>
 
               {/* CTAs with liquid glass style */}
