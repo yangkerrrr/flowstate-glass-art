@@ -3,38 +3,31 @@ import { useEffect, useRef, useState } from "react";
 const looks = [
   { id: 1, title: "Urban Flow", season: "SL26", color: "from-slate-400/50 to-zinc-500/30" },
   { id: 2, title: "Night Drift", season: "SL26", color: "from-stone-400/50 to-neutral-500/30" },
-  { id: 3, title: "Dawn Motion", season: "Sl26", color: "from-zinc-400/50 to-slate-500/30" },
+  { id: 3, title: "Dawn Motion", season: "SL26", color: "from-zinc-400/50 to-slate-500/30" },
 ];
 
 const Lookbook = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [revealedId, setRevealedId] = useState<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
+      ([entry]) => entry.isIntersecting && setIsVisible(true),
       { threshold: 0.2 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    sectionRef.current && observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const progress = Math.max(0, Math.min(1, -rect.top / rect.height + 0.5));
-        setScrollProgress(progress);
-      }
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, -rect.top / rect.height + 0.5));
+      setScrollProgress(progress);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -47,19 +40,15 @@ const Lookbook = () => {
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
-      {/* Floating decorations with enhanced parallax */}
+      {/* Floating decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div 
+        <div
           className="absolute top-20 left-[5%] w-20 h-20 liquid-glass rounded-full opacity-30"
-          style={{ transform: `translateY(${scrollProgress * 70}px) scale(${1 + scrollProgress * 0.2})` }}
+          style={{ transform: `translateY(${scrollProgress * 70}px)` }}
         />
-        <div 
+        <div
           className="absolute bottom-20 right-[10%] w-32 h-14 liquid-glass-pill opacity-25"
           style={{ transform: `translateY(${-scrollProgress * 90}px) rotate(${10 + scrollProgress * 20}deg)` }}
-        />
-        <div 
-          className="absolute top-1/2 right-[3%] w-12 h-12 liquid-glass rounded-xl opacity-20"
-          style={{ transform: `translateY(${scrollProgress * 100}px) rotate(${45 + scrollProgress * 45}deg)` }}
         />
       </div>
 
@@ -78,47 +67,93 @@ const Lookbook = () => {
 
         {/* Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {looks.map((look, index) => (
-            <div
-              key={look.id}
-              className={`group cursor-pointer transition-all duration-700 ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-12"
-              }`}
-              style={{ transitionDelay: `${index * 150 + 200}ms` }}
-            >
-              {/* Card */}
-              <div className="relative aspect-[3/4] liquid-glass overflow-hidden">
-                {/* Gradient background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${look.color} opacity-50 transition-opacity duration-500 group-hover:opacity-70`} />
+          {looks.map((look, index) => {
+            const isLive = look.id === 1;
+            const isRevealed = revealedId === 1;
 
-                {/* Geometric elements */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-32 h-32">
-                    <div className="absolute inset-0 border-2 border-foreground/20 rounded-2xl transform rotate-45 transition-all duration-500 group-hover:rotate-[60deg] group-hover:scale-110" />
-                    <div className="absolute inset-4 border border-foreground/10 rounded-xl transform -rotate-12 transition-all duration-500 group-hover:rotate-0" />
-                    <div className="absolute inset-8 liquid-glass rounded-lg transition-all duration-500 group-hover:scale-110" />
+            return (
+              <div
+                key={look.id}
+                className={`group transition-all duration-700 ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                } ${
+                  revealedId === 1 && look.id !== 1 ? "opacity-40 blur-[1px]" : ""
+                }`}
+                style={{ transitionDelay: `${index * 150 + 200}ms` }}
+                onClick={() => isLive && setRevealedId(1)}
+              >
+                <div className="relative aspect-[3/4] liquid-glass overflow-hidden cursor-pointer">
+                  {/* === MULTI-LAYER CARD FAN (LOOK #1 ONLY) === */}
+                  {isLive && (
+                    <>
+                      <div
+                        className="absolute inset-0 z-30 transition-transform duration-700 ease-out"
+                        style={{
+                          background: "linear-gradient(to bottom right, rgba(255,255,255,0.08), transparent)",
+                          transform: isRevealed
+                            ? "translate(60px, -80px) rotate(8deg)"
+                            : "translate(0,0)",
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 z-20 transition-transform duration-700 delay-100 ease-out"
+                        style={{
+                          background: "linear-gradient(to bottom right, rgba(255,255,255,0.12), transparent)",
+                          transform: isRevealed
+                            ? "translate(-70px, 10px) rotate(-6deg)"
+                            : "translate(0,0)",
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 z-10 transition-transform duration-700 delay-200 ease-out"
+                        style={{
+                          background: "linear-gradient(to bottom right, rgba(255,255,255,0.16), transparent)",
+                          transform: isRevealed
+                            ? "translate(40px, 90px) rotate(4deg)"
+                            : "translate(0,0)",
+                        }}
+                      />
+                    </>
+                  )}
+
+                  {/* === PLACEHOLDER IMAGE (ONLY AFTER REVEAL) === */}
+                  {isLive && (
+                    <img
+                      src="/placeholder-product.png"
+                      alt="Product placeholder"
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                        isRevealed ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  )}
+
+                  {/* === ORIGINAL CARD CONTENT === */}
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-500 ${
+                      isRevealed ? "opacity-0" : "opacity-100"
+                    }`}
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-br ${look.color} opacity-50`} />
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative w-32 h-32">
+                        <div className="absolute inset-0 border-2 border-foreground/20 rounded-2xl rotate-45" />
+                        <div className="absolute inset-4 border border-foreground/10 rounded-xl -rotate-12" />
+                        <div className="absolute inset-8 liquid-glass rounded-lg" />
+                      </div>
+                    </div>
+
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <span className="text-xs text-primary uppercase tracking-wider">
+                        {look.season}
+                      </span>
+                      <h3 className="text-xl font-semibold mt-1">{look.title}</h3>
+                    </div>
                   </div>
                 </div>
-
-                {/* Floating mini elements */}
-                <div className="absolute top-6 right-6 w-8 h-8 liquid-glass rounded-full opacity-60 group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute bottom-12 left-6 w-16 h-6 liquid-glass-pill opacity-40" />
-
-                {/* Overlay content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <span className="text-xs text-primary uppercase tracking-wider">
-                    {look.season}
-                  </span>
-                  <h3 className="text-xl font-semibold mt-1">{look.title}</h3>
-                </div>
-
-                {/* Corner accent */}
-                <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-primary/30 rounded-tl-lg opacity-0 group-hover:opacity-100 transition-all duration-500" />
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
