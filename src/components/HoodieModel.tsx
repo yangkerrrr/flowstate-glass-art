@@ -6,6 +6,22 @@ interface HoodieProps {
   scrollProgress: number;
 }
 
+useEffect(() => {
+  const MAX_ROTATION = Math.PI * 2;
+  const rotationY = scrollProgress * 1.2 * MAX_ROTATION;
+
+  if (rotationY < MAX_ROTATION) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [scrollProgress]);
+
+
 function Hoodie({ scrollProgress }: HoodieProps) {
   const { scene } = useGLTF("/hoodie.glb");
 
@@ -22,7 +38,7 @@ function Hoodie({ scrollProgress }: HoodieProps) {
       // Force realistic fabric response
       if (mesh.material) {
         mesh.material = new THREE.MeshStandardMaterial({
-          color: "#fbf7f5",
+          color: "#fbf0d9",
           roughness: 0.85,
           metalness: 0.03,
         });
