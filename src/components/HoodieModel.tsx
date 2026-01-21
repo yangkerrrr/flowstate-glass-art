@@ -30,7 +30,7 @@ function Hoodie({ scrollProgress }: HoodieProps) {
     }
   });
 
-  return <primitive object={scene} scale={2.15} />;
+  return <primitive object={scene} scale={1.90} />;
 }
 
 export default function HoodieModel({ scrollProgress }: HoodieProps) {
