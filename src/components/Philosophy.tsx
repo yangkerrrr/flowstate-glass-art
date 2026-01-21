@@ -102,7 +102,7 @@ const Philosophy = () => {
               >
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-slate-300/60 to-stone-400/40" />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 text-right">
-                  <div className="text-lg font-bold text-foreground">2024</div>
+                  <div className="text-lg font-bold text-foreground">2026</div>
                   <div className="text-xs text-muted-foreground">Collection</div>
                 </div>
               </div>
