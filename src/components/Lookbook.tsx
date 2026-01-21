@@ -119,7 +119,7 @@ const Lookbook = () => {
                   {/* === PLACEHOLDER IMAGE (ONLY AFTER REVEAL) === */}
                   {isLive && (
                     <img
-                      src="/placeholder-product.png"
+                      src="/placeholder.svg"
                       alt="Product placeholder"
                       className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
                         isRevealed ? "opacity-100" : "opacity-0"
