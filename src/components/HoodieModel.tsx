@@ -38,7 +38,7 @@ export default function HoodieModel({ scrollProgress }: HoodieProps) {
     <Canvas
       frameloop="demand"
       dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 4.5], fov: 40 }}
+      camera={{ position: [0, 0, 4.75], fov: 40 }}
       gl={{ antialias: true, powerPreference: "high-performance" }}
     >
       {/* Fabric lighting */}
