@@ -56,7 +56,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2024 yingnetwork. All rights reserved.
+            © 2026 yingnetwork. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Shipping"].map((item) => (
