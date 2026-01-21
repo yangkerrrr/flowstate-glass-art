@@ -6,21 +6,6 @@ interface HoodieProps {
   scrollProgress: number;
 }
 
-useEffect(() => {
-  const MAX_ROTATION = Math.PI * 2;
-  const rotationY = scrollProgress * 1.2 * MAX_ROTATION;
-
-  if (rotationY < MAX_ROTATION) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
-
-  return () => {
-    document.body.style.overflow = "";
-  };
-}, [scrollProgress]);
-
 
 function Hoodie({ scrollProgress }: HoodieProps) {
   const { scene } = useGLTF("/hoodie.glb");
