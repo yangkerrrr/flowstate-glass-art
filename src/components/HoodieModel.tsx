@@ -10,8 +10,8 @@ function Hoodie({ scrollProgress }: HoodieProps) {
   const { scene } = useGLTF("/hoodie.glb");
 
   // Subtle premium motion only
-  scene.rotation.y = scrollProgress * 1.2;
-  scene.rotation.x = scrollProgress * 0.25;
+  scene.rotation.y = scrollProgress * 1.55;
+  scene.rotation.x = scrollProgress * 0.45;
 
   scene.traverse((obj) => {
     if ((obj as THREE.Mesh).isMesh) {
@@ -22,7 +22,7 @@ function Hoodie({ scrollProgress }: HoodieProps) {
       // Force realistic fabric response
       if (mesh.material) {
         mesh.material = new THREE.MeshStandardMaterial({
-          color: "#121826",
+          color: "#fbf7f5",
           roughness: 0.85,
           metalness: 0.03,
         });
@@ -30,7 +30,7 @@ function Hoodie({ scrollProgress }: HoodieProps) {
     }
   });
 
-  return <primitive object={scene} scale={1.35} />;
+  return <primitive object={scene} scale={2.70} />;
 }
 
 export default function HoodieModel({ scrollProgress }: HoodieProps) {
