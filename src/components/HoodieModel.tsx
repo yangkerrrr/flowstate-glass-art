@@ -17,19 +17,19 @@ const Hoodie = ({ scrollProgress }: ModelProps) => {
     }
   });
 
-  // Fabric material - realistic hoodie look
+  // Fabric material - realistic hoodie look with off-white accents
   const fabricMaterial = new THREE.MeshStandardMaterial({
-    color: "#1a1510",
+    color: "#1a1a1f",
     roughness: 0.85,
     metalness: 0.05,
   });
 
   const accentMaterial = new THREE.MeshStandardMaterial({
-    color: "#f5b742",
-    emissive: "#f5b742",
-    emissiveIntensity: 0.4,
-    metalness: 0.6,
-    roughness: 0.3,
+    color: "#e8e4dc",
+    emissive: "#e8e4dc",
+    emissiveIntensity: 0.3,
+    metalness: 0.4,
+    roughness: 0.4,
   });
 
   return (
@@ -94,14 +94,14 @@ const Hoodie = ({ scrollProgress }: ModelProps) => {
         </mesh>
       </Float>
 
-      {/* Floating accent - simplified */}
+      {/* Floating accent - simplified with off-white tones */}
       <Float speed={2} rotationIntensity={0.3} floatIntensity={0.6}>
         <mesh position={[2, 1, -0.5]}>
           <icosahedronGeometry args={[0.2, 0]} />
           <meshStandardMaterial
-            color="#f5b742"
-            emissive="#f5b742"
-            emissiveIntensity={0.6}
+            color="#e8e4dc"
+            emissive="#e8e4dc"
+            emissiveIntensity={0.4}
           />
         </mesh>
       </Float>
@@ -110,9 +110,9 @@ const Hoodie = ({ scrollProgress }: ModelProps) => {
         <mesh position={[-2, -0.3, -0.3]}>
           <octahedronGeometry args={[0.15, 0]} />
           <meshStandardMaterial
-            color="#d4883a"
-            emissive="#d4883a"
-            emissiveIntensity={0.5}
+            color="#d4d0c8"
+            emissive="#d4d0c8"
+            emissiveIntensity={0.35}
           />
         </mesh>
       </Float>
@@ -134,8 +134,8 @@ const HoodieModel = ({ scrollProgress }: HoodieModelProps) => {
     >
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
-      <pointLight position={[-3, 2, 4]} intensity={0.4} color="#f5b742" />
-      <pointLight position={[3, -2, 2]} intensity={0.3} color="#d4883a" />
+      <pointLight position={[-3, 2, 4]} intensity={0.4} color="#e8e4dc" />
+      <pointLight position={[3, -2, 2]} intensity={0.3} color="#d4d0c8" />
       
       <Hoodie scrollProgress={scrollProgress} />
       

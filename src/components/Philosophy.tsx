@@ -41,29 +41,35 @@ const Philosophy = () => {
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
-      {/* Layered background decorations */}
+      {/* Layered background decorations with enhanced parallax */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Far layer */}
         <div 
           className="absolute top-20 right-[5%] w-64 h-32 liquid-glass-pill opacity-20"
-          style={{ transform: `translateY(${scrollProgress * 60}px) rotate(15deg)` }}
+          style={{ transform: `translateY(${scrollProgress * 80}px) rotate(${15 + scrollProgress * 10}deg)` }}
         />
         
-        {/* Mid layer - warm gradient pill like reference */}
+        {/* Mid layer - gradient pill */}
         <div 
           className="absolute bottom-32 left-[8%] w-48 h-16 liquid-glass-pill overflow-hidden opacity-30"
-          style={{ transform: `translateY(${-scrollProgress * 80}px)` }}
+          style={{ transform: `translateY(${-scrollProgress * 100}px) scale(${1 + scrollProgress * 0.1})` }}
         >
-          <div className="absolute inset-y-2 left-2 right-1/2 rounded-full bg-gradient-to-r from-amber-400/60 via-orange-400/60 to-yellow-400/60" />
+          <div className="absolute inset-y-2 left-2 right-1/2 rounded-full bg-gradient-to-r from-slate-400/40 via-stone-400/40 to-zinc-400/40" />
         </div>
 
         {/* Plus button decoration */}
         <div 
           className="absolute top-1/2 right-[15%] w-14 h-14 liquid-glass rounded-full flex items-center justify-center opacity-40"
-          style={{ transform: `translateY(${scrollProgress * 40}px)` }}
+          style={{ transform: `translateY(${scrollProgress * 60}px) rotate(${scrollProgress * 45}deg)` }}
         >
           <span className="text-xl text-muted-foreground">+</span>
         </div>
+
+        {/* Additional floating element */}
+        <div 
+          className="absolute top-[30%] left-[15%] w-10 h-10 liquid-glass rounded-xl opacity-25"
+          style={{ transform: `translateY(${scrollProgress * 120}px) rotate(${-30 + scrollProgress * 60}deg)` }}
+        />
       </div>
 
       <div className="container mx-auto px-6">
@@ -79,22 +85,22 @@ const Philosophy = () => {
               <div className="absolute top-12 left-12 w-64 h-80 liquid-glass rounded-3xl transform -rotate-6 opacity-40" />
               <div className="absolute top-6 left-6 w-64 h-80 liquid-glass rounded-3xl transform rotate-3 opacity-60" />
               <div className="absolute top-0 left-0 w-64 h-80 liquid-glass rounded-3xl flex flex-col items-center justify-center p-8">
-                <div className="font-japanese text-6xl text-primary mb-4">陽</div>
+                <div className="text-6xl text-primary mb-4 font-light">∞</div>
                 <div className="text-sm text-center text-muted-foreground">
-                  Yō — Radiance
+                  Timeless Design
                 </div>
                 <div className="mt-8 w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                 <div className="mt-8 text-xs text-muted-foreground text-center leading-relaxed">
-                  Embrace the warmth within, where light becomes expression
+                  Where simplicity meets sophistication
                 </div>
               </div>
 
-              {/* Floating pill with golden accent */}
+              {/* Floating pill with accent */}
               <div 
                 className="absolute -bottom-4 right-8 w-48 h-20 liquid-glass-pill overflow-hidden float-delayed"
-                style={{ transform: `translateY(${-scrollProgress * 30}px)` }}
+                style={{ transform: `translateY(${-scrollProgress * 40}px)` }}
               >
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-amber-400/80 to-orange-500/60" />
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-slate-300/60 to-stone-400/40" />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 text-right">
                   <div className="text-lg font-bold text-foreground">2024</div>
                   <div className="text-xs text-muted-foreground">Collection</div>
@@ -112,16 +118,16 @@ const Philosophy = () => {
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
             }`}
           >
-            <span className="font-japanese text-primary text-sm">哲学</span>
+            <span className="text-primary text-sm uppercase tracking-widest">About</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-2 mb-8">
               Our <span className="text-muted-foreground">Philosophy</span>
             </h2>
 
             <div className="space-y-6 text-muted-foreground leading-relaxed">
               <p>
-                SOL exists at the intersection of Japanese minimalism and
-                contemporary streetwear. We believe clothing should radiate
-                warmth, not just style.
+                SOL exists at the intersection of minimalism and
+                contemporary streetwear. We believe clothing should make
+                a statement through subtlety.
               </p>
               <p>
                 Each piece is designed with intention—every seam, every cut,
@@ -129,18 +135,18 @@ const Philosophy = () => {
                 to reveal what matters: form that follows function.
               </p>
               <p>
-                No faces. No personalities. Just pure design. Our garments
-                speak for themselves, allowing you to shine your own light
-                onto the canvas we provide.
+                No excess. No compromise. Just pure design. Our garments
+                speak for themselves, allowing you to define your own
+                narrative.
               </p>
             </div>
 
             {/* Stats in liquid glass pills */}
             <div className="grid grid-cols-3 gap-4 mt-12">
               {[
-                { value: "100%", label: "Cotton", color: "from-amber-400/60 to-yellow-500/40" },
-                { value: "Zero", label: "Waste", color: "from-orange-400/60 to-amber-500/40" },
-                { value: "∞", label: "Light", color: "from-yellow-400/60 to-orange-500/40" },
+                { value: "100%", label: "Cotton", color: "from-slate-400/40 to-stone-500/30" },
+                { value: "Zero", label: "Waste", color: "from-zinc-400/40 to-slate-500/30" },
+                { value: "∞", label: "Quality", color: "from-stone-400/40 to-zinc-500/30" },
               ].map((stat, index) => (
                 <div
                   key={stat.label}

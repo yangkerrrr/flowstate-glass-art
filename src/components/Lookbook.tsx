@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const looks = [
-  { id: 1, title: "Urban Flow", season: "AW24", color: "from-cyan-400/50 to-blue-500/30" },
-  { id: 2, title: "Night Drift", season: "AW24", color: "from-purple-400/50 to-pink-500/30" },
-  { id: 3, title: "Dawn Motion", season: "AW24", color: "from-orange-400/50 to-amber-500/30" },
+  { id: 1, title: "Urban Flow", season: "AW24", color: "from-slate-400/50 to-zinc-500/30" },
+  { id: 2, title: "Night Drift", season: "AW24", color: "from-stone-400/50 to-neutral-500/30" },
+  { id: 3, title: "Dawn Motion", season: "AW24", color: "from-zinc-400/50 to-slate-500/30" },
 ];
 
 const Lookbook = () => {
@@ -47,15 +47,19 @@ const Lookbook = () => {
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
-      {/* Floating decorations */}
+      {/* Floating decorations with enhanced parallax */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div 
           className="absolute top-20 left-[5%] w-20 h-20 liquid-glass rounded-full opacity-30"
-          style={{ transform: `translateY(${scrollProgress * 50}px)` }}
+          style={{ transform: `translateY(${scrollProgress * 70}px) scale(${1 + scrollProgress * 0.2})` }}
         />
         <div 
           className="absolute bottom-20 right-[10%] w-32 h-14 liquid-glass-pill opacity-25"
-          style={{ transform: `translateY(${-scrollProgress * 70}px) rotate(10deg)` }}
+          style={{ transform: `translateY(${-scrollProgress * 90}px) rotate(${10 + scrollProgress * 20}deg)` }}
+        />
+        <div 
+          className="absolute top-1/2 right-[3%] w-12 h-12 liquid-glass rounded-xl opacity-20"
+          style={{ transform: `translateY(${scrollProgress * 100}px) rotate(${45 + scrollProgress * 45}deg)` }}
         />
       </div>
 
@@ -66,7 +70,7 @@ const Lookbook = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="font-japanese text-primary text-sm">ルックブック</span>
+          <span className="text-primary text-sm uppercase tracking-widest">Gallery</span>
           <h2 className="text-4xl md:text-5xl font-bold mt-2">
             Look<span className="text-muted-foreground">book</span>
           </h2>

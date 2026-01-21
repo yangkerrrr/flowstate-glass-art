@@ -1,11 +1,11 @@
 import { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import HoodieModel from "./HoodieModel";
-import solLogo from "@/assets/sol-logo.png";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setIsVisible(true);
@@ -17,8 +17,19 @@ const Hero = () => {
       setScrollProgress(progress);
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 2,
+        y: (e.clientY / window.innerHeight - 0.5) * 2,
+      });
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
@@ -26,53 +37,73 @@ const Hero = () => {
       {/* Background with depth layers */}
       <div className="absolute inset-0 hero-gradient" />
 
-      {/* Layer 1 - Far background elements */}
+      {/* Layer 1 - Far background elements with parallax */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-transform duration-700 ease-out"
           style={{
-            background: 'radial-gradient(circle, hsl(42 100% 55% / 0.12) 0%, transparent 70%)',
-            transform: `translateY(${scrollProgress * 100}px)`,
+            background: 'radial-gradient(circle, hsl(220 20% 50% / 0.08) 0%, transparent 70%)',
+            transform: `translateY(${scrollProgress * 100 + mousePosition.y * 20}px) translateX(${mousePosition.x * 15}px)`,
           }}
         />
         <div 
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl transition-transform duration-700 ease-out"
           style={{
-            background: 'radial-gradient(circle, hsl(25 80% 45% / 0.08) 0%, transparent 70%)',
-            transform: `translateY(${scrollProgress * 50}px)`,
+            background: 'radial-gradient(circle, hsl(45 25% 75% / 0.06) 0%, transparent 70%)',
+            transform: `translateY(${scrollProgress * 50 + mousePosition.y * -15}px) translateX(${mousePosition.x * -20}px)`,
           }}
         />
       </div>
 
-      {/* Layer 2 - Floating glass decorations */}
+      {/* Layer 2 - Floating glass decorations with enhanced dynamics */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Top left pill */}
+        {/* Top left pill - floats with scroll & mouse */}
         <div 
-          className="absolute top-32 left-[10%] w-24 h-12 liquid-glass-pill opacity-60"
-          style={{ transform: `translateY(${scrollProgress * 80}px) rotate(${scrollProgress * 10}deg)` }}
+          className="absolute top-32 left-[10%] w-24 h-12 liquid-glass-pill opacity-60 transition-transform duration-500 ease-out"
+          style={{ 
+            transform: `translateY(${scrollProgress * 80 + mousePosition.y * 10}px) translateX(${mousePosition.x * 8}px) rotate(${scrollProgress * 10 + mousePosition.x * 5}deg)` 
+          }}
         />
         
         {/* Bottom right circle */}
         <div 
-          className="absolute bottom-40 right-[15%] w-16 h-16 liquid-glass rounded-full opacity-50"
-          style={{ transform: `translateY(${-scrollProgress * 60}px)` }}
+          className="absolute bottom-40 right-[15%] w-16 h-16 liquid-glass rounded-full opacity-50 transition-transform duration-600 ease-out"
+          style={{ 
+            transform: `translateY(${-scrollProgress * 60 + mousePosition.y * -12}px) translateX(${mousePosition.x * -10}px) scale(${1 + scrollProgress * 0.1})` 
+          }}
         />
 
         {/* Mid floating pill with accent */}
         <div 
-          className="absolute top-1/2 left-[5%] w-32 h-14 liquid-glass-pill overflow-hidden opacity-40"
-          style={{ transform: `translateY(${scrollProgress * 120}px)` }}
+          className="absolute top-1/2 left-[5%] w-32 h-14 liquid-glass-pill overflow-hidden opacity-40 transition-transform duration-700 ease-out"
+          style={{ 
+            transform: `translateY(${scrollProgress * 120 + mousePosition.y * 15}px) translateX(${mousePosition.x * 12}px)` 
+          }}
         >
-          <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-primary/60 to-accent/40" />
+          <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-primary/40 to-accent/30" />
         </div>
 
-        {/* Small accent circle */}
+        {/* Small accent circle - off-white glow */}
         <div 
-          className="absolute top-[60%] right-[8%] w-10 h-10 rounded-full opacity-60"
+          className="absolute top-[60%] right-[8%] w-10 h-10 rounded-full opacity-60 transition-transform duration-500 ease-out"
           style={{ 
-            background: 'linear-gradient(135deg, hsl(42 100% 60% / 0.8), hsl(38 90% 50% / 0.6))',
-            transform: `translateY(${-scrollProgress * 90}px)`,
-            boxShadow: '0 8px 32px hsl(42 100% 55% / 0.3)'
+            background: 'linear-gradient(135deg, hsl(45 25% 90% / 0.7), hsl(220 15% 80% / 0.5))',
+            transform: `translateY(${-scrollProgress * 90 + mousePosition.y * -8}px) translateX(${mousePosition.x * 6}px)`,
+            boxShadow: '0 8px 32px hsl(45 25% 90% / 0.2)'
+          }}
+        />
+
+        {/* New floating elements for depth */}
+        <div 
+          className="absolute top-[20%] right-[25%] w-6 h-6 liquid-glass rounded-full opacity-30 transition-transform duration-800 ease-out"
+          style={{ 
+            transform: `translateY(${scrollProgress * 150 + mousePosition.y * 25}px) translateX(${mousePosition.x * -18}px)` 
+          }}
+        />
+        <div 
+          className="absolute bottom-[30%] left-[20%] w-20 h-8 liquid-glass-pill opacity-25 transition-transform duration-900 ease-out"
+          style={{ 
+            transform: `translateY(${-scrollProgress * 70 + mousePosition.y * -20}px) rotate(${-15 + scrollProgress * 20}deg)` 
           }}
         />
       </div>
@@ -83,14 +114,14 @@ const Hero = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left - Content */}
             <div className="relative z-20">
-              {/* Japanese text accent */}
+              {/* Tagline */}
               <div
-                className={`font-japanese text-sm text-primary mb-4 transition-all duration-700 ${
+                className={`text-sm text-primary mb-4 tracking-widest uppercase transition-all duration-700 ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
                 style={{ transitionDelay: "100ms" }}
               >
-                太陽 — The Sun
+                Premium Apparel
               </div>
 
               {/* Main headline */}
@@ -100,11 +131,11 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "200ms" }}
               >
-                <span className="text-gradient">Radiate</span>
+                <span className="text-gradient">Define</span>
                 <br />
                 <span className="text-foreground">Your</span>
                 <br />
-                <span className="text-muted-foreground">Energy</span>
+                <span className="text-muted-foreground">Style</span>
               </h1>
 
               {/* Subheadline */}

@@ -58,10 +58,10 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         sol: {
-          gold: "hsl(42 100% 62%)",
-          amber: "hsl(38 90% 55%)",
-          dark: "hsl(30 5% 5%)",
-          warm: "hsl(30 8% 12%)",
+          cream: "hsl(45 30% 88%)",
+          stone: "hsl(40 25% 82%)",
+          dark: "hsl(220 15% 6%)",
+          muted: "hsl(220 12% 12%)",
         },
       },
       fontFamily: {
@@ -111,7 +111,7 @@ export default {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "sol-gradient": "linear-gradient(135deg, hsl(42 100% 62% / 0.2), hsl(38 80% 55% / 0.1), hsl(25 60% 45% / 0.1))",
+        "sol-gradient": "linear-gradient(135deg, hsl(45 30% 88% / 0.15), hsl(220 15% 60% / 0.08), hsl(220 10% 50% / 0.05))",
       },
     },
   },

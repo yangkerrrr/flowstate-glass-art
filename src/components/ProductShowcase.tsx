@@ -3,17 +3,16 @@ import { useEffect, useRef, useState } from "react";
 interface Product {
   id: number;
   name: string;
-  nameJp: string;
   price: string;
   category: string;
   accentColor: string;
 }
 
 const products: Product[] = [
-  { id: 1, name: "Sol Hoodie", nameJp: "ソル", price: "¥18,500", category: "Outerwear", accentColor: "from-amber-400/70 to-yellow-500/50" },
-  { id: 2, name: "Dawn Tee", nameJp: "夜明け", price: "¥8,900", category: "Essentials", accentColor: "from-orange-400/70 to-amber-500/50" },
-  { id: 3, name: "Glow Pants", nameJp: "輝き", price: "¥15,200", category: "Bottoms", accentColor: "from-yellow-400/70 to-orange-500/50" },
-  { id: 4, name: "Radiant Jacket", nameJp: "光", price: "¥28,000", category: "Outerwear", accentColor: "from-amber-500/70 to-yellow-400/50" },
+  { id: 1, name: "Sol Hoodie", price: "$185", category: "Outerwear", accentColor: "from-slate-300/70 to-stone-400/50" },
+  { id: 2, name: "Dawn Tee", price: "$89", category: "Essentials", accentColor: "from-zinc-300/70 to-slate-400/50" },
+  { id: 3, name: "Glow Pants", price: "$152", category: "Bottoms", accentColor: "from-stone-300/70 to-zinc-400/50" },
+  { id: 4, name: "Radiant Jacket", price: "$280", category: "Outerwear", accentColor: "from-neutral-300/70 to-stone-400/50" },
 ];
 
 const ProductShowcase = () => {
@@ -58,15 +57,19 @@ const ProductShowcase = () => {
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
-      {/* Floating background decorations */}
+      {/* Floating background decorations with enhanced parallax */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div 
           className="absolute -top-20 right-[20%] w-40 h-20 liquid-glass-pill opacity-30"
-          style={{ transform: `translateY(${scrollProgress * 100}px) rotate(-10deg)` }}
+          style={{ transform: `translateY(${scrollProgress * 120}px) rotate(${-10 + scrollProgress * 15}deg)` }}
         />
         <div 
           className="absolute bottom-40 left-[10%] w-24 h-24 liquid-glass rounded-full opacity-20"
-          style={{ transform: `translateY(${-scrollProgress * 80}px)` }}
+          style={{ transform: `translateY(${-scrollProgress * 100}px) scale(${1 + scrollProgress * 0.15})` }}
+        />
+        <div 
+          className="absolute top-1/3 right-[5%] w-16 h-16 liquid-glass rounded-2xl opacity-25"
+          style={{ transform: `translateY(${scrollProgress * 80}px) rotate(${45 + scrollProgress * 30}deg)` }}
         />
       </div>
 
@@ -77,7 +80,7 @@ const ProductShowcase = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="font-japanese text-primary text-sm">コレクション</span>
+          <span className="text-primary text-sm uppercase tracking-widest">Featured</span>
           <h2 className="text-4xl md:text-5xl font-bold mt-2">
             Current <span className="text-muted-foreground">Collection</span>
           </h2>
@@ -104,7 +107,7 @@ const ProductShowcase = () => {
                 <div className="flex-1 flex items-center justify-center relative">
                   {/* Inner pill with color */}
                   <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${product.accentColor} flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}>
-                    <span className="text-2xl font-bold text-white/90">
+                    <span className="text-2xl font-bold text-foreground/90">
                       {product.name.charAt(0)}
                     </span>
                   </div>
@@ -122,9 +125,6 @@ const ProductShowcase = () => {
                     <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
                       {product.name}
                     </h3>
-                    <span className="font-japanese text-xs text-muted-foreground">
-                      {product.nameJp}
-                    </span>
                   </div>
                   <p className="text-primary font-medium">{product.price}</p>
                 </div>
