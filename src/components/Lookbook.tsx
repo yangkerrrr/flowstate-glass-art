@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const looks = [
-  { id: 1, title: "Urban Flow", season: "AW24", color: "from-slate-400/50 to-zinc-500/30" },
-  { id: 2, title: "Night Drift", season: "AW24", color: "from-stone-400/50 to-neutral-500/30" },
-  { id: 3, title: "Dawn Motion", season: "AW24", color: "from-zinc-400/50 to-slate-500/30" },
+  { id: 1, title: "Urban Flow", season: "SL26", color: "from-slate-400/50 to-zinc-500/30" },
+  { id: 2, title: "Night Drift", season: "SL26", color: "from-stone-400/50 to-neutral-500/30" },
+  { id: 3, title: "Dawn Motion", season: "Sl26", color: "from-zinc-400/50 to-slate-500/30" },
 ];
 
 const Lookbook = () => {
