@@ -9,12 +9,9 @@ const Footer = () => {
               <span className="text-3xl font-black tracking-tight text-primary">SOL</span>
             </div>
             <p className="text-muted-foreground text-sm max-w-xs">
-              Minimal design. Maximum warmth. Crafted for those who
-              shine from within.
+              Minimal design. Maximum impact. Crafted for those who
+              define their own style.
             </p>
-            <div className="font-japanese text-sm text-primary mt-4">
-              太陽
-            </div>
           </div>
 
           {/* Links */}
@@ -59,7 +56,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2024 SOL. All rights reserved.
+            © 2024 yingnetwork. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Shipping"].map((item) => (
