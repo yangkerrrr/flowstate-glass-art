@@ -36,23 +36,41 @@ const AdminSetup = () => {
     checkExistingAdmin();
   }, []);
 
-  // Redirect if already admin
+  // Make admin when user signs up and no admin exists
   useEffect(() => {
     if (user && hasAdmin === false) {
-      // User just signed up and no admin exists - make them admin
-      makeAdmin(user.id);
+      makeAdmin();
     }
   }, [user, hasAdmin]);
 
-  const makeAdmin = async (userId: string) => {
-    const { error } = await supabase
-      .from("user_roles")
-      .insert({ user_id: userId, role: "admin" });
+  const makeAdmin = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast({
+        title: "Not authenticated",
+        description: "Please sign in first",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    if (error) {
+    const response = await fetch(
+      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/setup-admin`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
       toast({
         title: "Failed to set admin role",
-        description: error.message,
+        description: result.error,
         variant: "destructive",
       });
     } else {
@@ -60,7 +78,6 @@ const AdminSetup = () => {
         title: "Admin account created!",
         description: "You now have full admin access.",
       });
-      // Refresh auth state and redirect
       window.location.href = "/admin";
     }
   };
