@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,20 +14,35 @@ serve(async (req) => {
   }
 
   try {
-    const clientId = Deno.env.get("PAYPAL_CLIENT_ID");
-
-    if (!clientId) {
-      console.error("PAYPAL_CLIENT_ID not configured");
+    // Verify authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
       return new Response(
-        JSON.stringify({ error: "PayPal not configured" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        JSON.stringify({ error: "Authentication required" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log("Returning PayPal client ID");
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: "Invalid authentication" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const clientId = Deno.env.get("PAYPAL_CLIENT_ID");
+    
+    if (!clientId) {
+      throw new Error("PayPal client ID not configured");
+    }
+
     return new Response(
       JSON.stringify({ clientId }),
       {
@@ -35,9 +51,9 @@ serve(async (req) => {
       }
     );
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error getting PayPal client ID:", error);
     return new Response(
-      JSON.stringify({ error: "Internal server error" }),
+      JSON.stringify({ error: "Failed to get PayPal client ID" }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

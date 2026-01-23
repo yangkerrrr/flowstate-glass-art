@@ -9,8 +9,6 @@ const corsHeaders = {
 
 interface CartItem {
   id: string;
-  name: string;
-  price: number;
   quantity: number;
 }
 
@@ -21,6 +19,12 @@ interface ShippingInfo {
   city: string;
   country: string;
   zip: string;
+}
+
+interface ProductRow {
+  id: string;
+  name: string;
+  price: number;
 }
 
 async function getPayPalAccessToken(): Promise<string> {
@@ -60,14 +64,81 @@ serve(async (req) => {
   }
 
   try {
-    const { orderId, items, shipping, totalAmount } = (await req.json()) as {
+    // Verify authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Authentication required" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const supabaseAuth = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: authError } = await supabaseAuth.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: "Invalid authentication" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { orderId, items, shipping } = (await req.json()) as {
       orderId: string;
       items: CartItem[];
       shipping: ShippingInfo;
-      totalAmount: number;
     };
 
-    console.log("Capturing PayPal order:", orderId);
+    // Validate input
+    if (!orderId || !items || !Array.isArray(items) || items.length === 0) {
+      return new Response(
+        JSON.stringify({ error: "Invalid request data" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    console.log("Capturing PayPal order:", orderId, "for user:", user.email);
+
+    // Use service role client for database operations
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Fetch actual prices from database to prevent price manipulation
+    const productIds = items.map((item) => item.id);
+    const { data: products, error: productsError } = await supabase
+      .from("products")
+      .select("id, name, price")
+      .in("id", productIds);
+
+    if (productsError || !products) {
+      console.error("Failed to fetch products:", productsError);
+      throw new Error("Failed to validate product prices");
+    }
+
+    // Calculate validated total from database prices
+    let validatedTotal = 0;
+    const validatedItems: { id: string; name: string; price: number; quantity: number }[] = [];
+
+    for (const item of items) {
+      const dbProduct = products.find((p: ProductRow) => p.id === item.id);
+      if (!dbProduct) {
+        throw new Error(`Product not found: ${item.id}`);
+      }
+      validatedTotal += Number(dbProduct.price) * item.quantity;
+      validatedItems.push({
+        id: dbProduct.id,
+        name: dbProduct.name,
+        price: Number(dbProduct.price),
+        quantity: item.quantity,
+      });
+    }
+
+    console.log("Validated total from database:", validatedTotal);
 
     const accessToken = await getPayPalAccessToken();
 
@@ -92,16 +163,23 @@ serve(async (req) => {
     const captureData = await captureResponse.json();
     console.log("Payment captured:", captureData.status);
 
-    // Store order in database using service role
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Verify PayPal captured amount matches our validated total
+    const paypalAmount = parseFloat(
+      captureData.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value || "0"
+    );
 
+    if (Math.abs(paypalAmount - validatedTotal) > 0.01) {
+      console.error("Amount mismatch!", { paypalAmount, validatedTotal });
+      // Payment was captured but amounts don't match - this is suspicious
+      // Log for investigation but still record the order with the PayPal amount
+      console.error("WARNING: PayPal amount differs from database total");
+    }
+
+    // Store order in database using validated data
     const { error: dbError } = await supabase.from("orders").insert({
-      user_email: shipping.email,
-      total_amount: totalAmount,
-      items: items,
+      user_email: user.email || shipping.email,
+      total_amount: paypalAmount, // Use PayPal's captured amount as source of truth
+      items: validatedItems, // Use validated items from database
       shipping_address: shipping,
       status: "paid",
       stripe_payment_intent_id: captureData.purchase_units?.[0]?.payments?.captures?.[0]?.id,
