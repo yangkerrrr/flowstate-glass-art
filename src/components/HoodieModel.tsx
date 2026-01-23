@@ -24,8 +24,6 @@ function Hoodie({ scrollProgress }: HoodieProps) {
       if (mesh.material) {
         mesh.material = new THREE.MeshStandardMaterial({
           color: "#fbf0d9",
-          roughness: 0.85,
-          metalness: 0.03,
         });
       }
     }
