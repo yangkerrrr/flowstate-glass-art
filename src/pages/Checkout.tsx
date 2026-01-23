@@ -100,13 +100,11 @@ const Checkout = () => {
         }
         setErrors({});
 
-        // Create order via edge function
+        // Create order via edge function (only send id and quantity, server validates prices)
         const { data, error } = await supabase.functions.invoke("create-paypal-order", {
           body: {
             items: items.map((item) => ({
               id: item.id,
-              name: item.name,
-              price: item.price,
               quantity: item.quantity,
             })),
             shipping,
@@ -122,7 +120,7 @@ const Checkout = () => {
       onApprove: async (data: { orderID: string }) => {
         setProcessing(true);
         try {
-          // Capture the order
+          // Capture the order (only send id and quantity, server validates prices)
           const { data: captureData, error } = await supabase.functions.invoke(
             "capture-paypal-order",
             {
@@ -130,12 +128,9 @@ const Checkout = () => {
                 orderId: data.orderID,
                 items: items.map((item) => ({
                   id: item.id,
-                  name: item.name,
-                  price: item.price,
                   quantity: item.quantity,
                 })),
                 shipping,
-                totalAmount: totalPrice,
               },
             }
           );

@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,8 +9,6 @@ const corsHeaders = {
 
 interface CartItem {
   id: string;
-  name: string;
-  price: number;
   quantity: number;
 }
 
@@ -20,6 +19,13 @@ interface ShippingInfo {
   city: string;
   country: string;
   zip: string;
+}
+
+interface ProductRow {
+  id: string;
+  name: string;
+  price: number;
+  is_active: boolean;
 }
 
 async function getPayPalAccessToken(): Promise<string> {
@@ -61,18 +67,99 @@ serve(async (req) => {
   }
 
   try {
+    // Verify authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Authentication required" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: "Invalid authentication" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { items, shipping } = (await req.json()) as {
       items: CartItem[];
       shipping: ShippingInfo;
     };
 
-    console.log("Creating PayPal order for items:", items.length);
+    // Validate input
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return new Response(
+        JSON.stringify({ error: "Invalid items" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    // Calculate total
-    const total = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+    console.log("Creating PayPal order for user:", user.email, "items:", items.length);
+
+    // Fetch actual prices from database to prevent price manipulation
+    const productIds = items.map((item) => item.id);
+    const { data: products, error: productsError } = await supabase
+      .from("products")
+      .select("id, name, price, is_active")
+      .in("id", productIds);
+
+    if (productsError || !products) {
+      console.error("Failed to fetch products:", productsError);
+      throw new Error("Failed to validate product prices");
+    }
+
+    // Validate all products exist and are active, calculate total using database prices
+    const validatedItems: { name: string; quantity: string; unit_amount: { currency_code: string; value: string } }[] = [];
+    let total = 0;
+
+    for (const item of items) {
+      const dbProduct = products.find((p: ProductRow) => p.id === item.id);
+      
+      if (!dbProduct) {
+        return new Response(
+          JSON.stringify({ error: `Product not found: ${item.id}` }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (!dbProduct.is_active) {
+        return new Response(
+          JSON.stringify({ error: `Product not available: ${dbProduct.name}` }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (item.quantity < 1 || item.quantity > 100) {
+        return new Response(
+          JSON.stringify({ error: `Invalid quantity for ${dbProduct.name}` }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Use DATABASE price, not client-supplied price
+      const itemTotal = Number(dbProduct.price) * item.quantity;
+      total += itemTotal;
+
+      validatedItems.push({
+        name: dbProduct.name,
+        quantity: item.quantity.toString(),
+        unit_amount: {
+          currency_code: "USD",
+          value: Number(dbProduct.price).toFixed(2),
+        },
+      });
+    }
+
+    console.log("Validated total from database:", total);
 
     const accessToken = await getPayPalAccessToken();
 
@@ -90,14 +177,7 @@ serve(async (req) => {
               },
             },
           },
-          items: items.map((item) => ({
-            name: item.name,
-            quantity: item.quantity.toString(),
-            unit_amount: {
-              currency_code: "USD",
-              value: item.price.toFixed(2),
-            },
-          })),
+          items: validatedItems,
           shipping: {
             name: {
               full_name: shipping.name,
@@ -132,7 +212,7 @@ serve(async (req) => {
     }
 
     const order = await response.json();
-    console.log("PayPal order created:", order.id);
+    console.log("PayPal order created:", order.id, "for amount:", total);
 
     return new Response(
       JSON.stringify({ orderId: order.id }),
