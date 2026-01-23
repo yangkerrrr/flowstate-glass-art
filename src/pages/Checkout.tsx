@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/hooks/useCart";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,18 @@ const Checkout = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const paypalRef = useRef<HTMLDivElement>(null);
+  const paypalButtonsRendered = useRef(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
+  
+  // Use refs for shipping to avoid re-rendering PayPal on every keystroke
+  const shippingRef = useRef({
+    email: "",
+    name: "",
+    address: "",
+    city: "",
+    country: "",
+    zip: "",
+  });
   
   const [shipping, setShipping] = useState({
     email: "",
@@ -50,8 +61,15 @@ const Checkout = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [processing, setProcessing] = useState(false);
 
+  // Keep ref in sync with state
+  useEffect(() => {
+    shippingRef.current = shipping;
+  }, [shipping]);
+
   // Load PayPal SDK
   useEffect(() => {
+    let scriptElement: HTMLScriptElement | null = null;
+    
     const loadPayPalScript = async () => {
       // Fetch client ID from edge function
       const { data, error } = await supabase.functions.invoke("get-paypal-client-id");
@@ -61,35 +79,42 @@ const Checkout = () => {
         return;
       }
 
-      const script = document.createElement("script");
-      script.src = `https://www.paypal.com/sdk/js?client-id=${data.clientId}&currency=USD`;
-      script.async = true;
-      script.onload = () => setPaypalLoaded(true);
-      document.body.appendChild(script);
+      // Check if script already exists
+      const existingScript = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
+      if (existingScript) {
+        setPaypalLoaded(true);
+        return;
+      }
 
-      return () => {
-        document.body.removeChild(script);
-      };
+      scriptElement = document.createElement("script");
+      scriptElement.src = `https://www.paypal.com/sdk/js?client-id=${data.clientId}&currency=USD`;
+      scriptElement.async = true;
+      scriptElement.onload = () => setPaypalLoaded(true);
+      document.body.appendChild(scriptElement);
     };
 
     if (items.length > 0) {
       loadPayPalScript();
     }
+
+    // Cleanup on unmount
+    return () => {
+      paypalButtonsRendered.current = false;
+    };
   }, [items.length]);
 
-  // Render PayPal buttons
+  // Render PayPal buttons only once
   useEffect(() => {
     if (!paypalLoaded || !window.paypal || !paypalRef.current || items.length === 0) return;
+    if (paypalButtonsRendered.current) return;
 
-    // Clear previous buttons
-    if (paypalRef.current) {
-      paypalRef.current.innerHTML = "";
-    }
+    paypalButtonsRendered.current = true;
 
     window.paypal.Buttons({
       createOrder: async () => {
-        // Validate shipping info first
-        const result = shippingSchema.safeParse(shipping);
+        // Validate shipping info using ref for current values
+        const currentShipping = shippingRef.current;
+        const result = shippingSchema.safeParse(currentShipping);
         if (!result.success) {
           const fieldErrors: Record<string, string> = {};
           result.error.errors.forEach((err) => {
@@ -107,7 +132,7 @@ const Checkout = () => {
               id: item.id,
               quantity: item.quantity,
             })),
-            shipping,
+            shipping: currentShipping,
           },
         });
 
@@ -120,6 +145,7 @@ const Checkout = () => {
       onApprove: async (data: { orderID: string }) => {
         setProcessing(true);
         try {
+          const currentShipping = shippingRef.current;
           // Capture the order (only send id and quantity, server validates prices)
           const { data: captureData, error } = await supabase.functions.invoke(
             "capture-paypal-order",
@@ -130,7 +156,7 @@ const Checkout = () => {
                   id: item.id,
                   quantity: item.quantity,
                 })),
-                shipping,
+                shipping: currentShipping,
               },
             }
           );
@@ -164,7 +190,7 @@ const Checkout = () => {
         });
       },
     }).render("#paypal-button-container");
-  }, [paypalLoaded, items, shipping, totalPrice, clearCart, navigate, toast]);
+  }, [paypalLoaded, items, clearCart, navigate, toast]);
 
   if (items.length === 0) {
     return (
