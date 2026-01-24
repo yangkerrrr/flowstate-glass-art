@@ -33,8 +33,9 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
 
-    // Send to Discord webhook
+    // Send to Discord webhook (with thread_name for forum channels)
     const discordPayload = {
+      thread_name: `Visit: ${page} - ${new Date().toLocaleDateString()}`,
       embeds: [
         {
           title: "🌐 New Website Visit",
