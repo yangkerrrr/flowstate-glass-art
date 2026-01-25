@@ -270,22 +270,19 @@ const Admin = () => {
           <TabsContent value="products" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold">Products</h2>
-              <Dialog open={dialogOpen} onOpenChange={(open) => {
-                if (!open) resetForm();
-                setDialogOpen(open);
-              }}>
+              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
                   <Button variant="hero" onClick={() => {
                     resetForm();
-                    setDialogOpen(true);
                   }}>
                     <Plus className="w-4 h-4 mr-2" />
                     Add Product
                   </Button>
                 </DialogTrigger>
                 <DialogContent 
-                  className="liquid-glass border-border/50 max-w-lg"
+                  className="bg-background border-border max-w-lg"
                   onOpenAutoFocus={(e) => e.preventDefault()}
+                  onCloseAutoFocus={(e) => e.preventDefault()}
                 >
                   <DialogHeader>
                     <DialogTitle>
