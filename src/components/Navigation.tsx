@@ -30,20 +30,27 @@ const Navigation = () => {
       <div className="liquid-glass-pill px-6 py-3 flex items-center justify-between transition-all duration-500">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-1 group transition-transform duration-300 hover:scale-105">
-          <span className="text-2xl font-black tracking-tight text-primary">SOL</span>
+          <span className="text-2xl font-black tracking-tight text-[hsl(var(--sol-mark))]">SOL</span>
+          <span className="hidden lg:inline text-xs text-muted-foreground tracking-wide ml-2">
+            Medicube Certified Reseller
+          </span>
         </Link>
 
         {/* Navigation Links */}
         <div className="hidden md:flex items-center gap-6">
           {isHomePage ? (
             <>
-              {["Collection", "About", "Lookbook"].map((item) => (
+              {[
+                { label: "Products", href: "#products" },
+                { label: "Why Us", href: "#why-us" },
+                { label: "Routines", href: "#routines" },
+              ].map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
+                  key={item.href}
+                  href={item.href}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 relative group"
                 >
-                  {item}
+                  {item.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
@@ -77,11 +84,9 @@ const Navigation = () => {
           {user ? (
             <div className="hidden md:flex items-center gap-2">
               {isAdmin && (
-                <Link to="/admin">
-                  <Button variant="outline" size="sm">
-                    Admin
-                  </Button>
-                </Link>
+                <Button asChild variant="outline" size="sm">
+                  <Link to="/admin">Admin</Link>
+                </Button>
               )}
               <button
                 onClick={signOut}
@@ -92,20 +97,18 @@ const Navigation = () => {
               </button>
             </div>
           ) : (
-            <Link to="/auth" className="hidden md:block">
-              <Button variant="outline" size="sm">
+            <Button asChild variant="outline" size="sm" className="hidden md:inline-flex">
+              <Link to="/auth">
                 <User className="w-4 h-4 mr-2" />
                 Sign In
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           )}
 
           {/* Shop Now CTA */}
-          <Link to="/shop" className="hidden md:block">
-            <Button variant="hero" size="sm">
-              Shop Now
-            </Button>
-          </Link>
+          <Button asChild variant="hero" size="sm" className="hidden md:inline-flex">
+            <Link to="/shop">Shop Medicube</Link>
+          </Button>
 
           {/* Mobile Menu */}
           <button className="md:hidden flex flex-col gap-1.5 p-2">

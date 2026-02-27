@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +15,15 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Pencil, Trash2, Package, ShoppingCart } from "lucide-react";
+import {
+  adminCreateProduct,
+  adminDeleteProduct,
+  adminListOrders,
+  adminListProducts,
+  adminUpdateOrderStatus,
+  adminUpdateProduct,
+  adminToggleProductActive,
+} from "@/integrations/db/client";
 
 interface Product {
   id: string;
@@ -73,29 +81,21 @@ const Admin = () => {
   }, [isAdmin]);
 
   const fetchProducts = async () => {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching products:", error);
-    } else {
+    try {
+      const data = await adminListProducts();
       setProducts(data || []);
+    } catch (error) {
+      console.error("Error fetching products:", error);
     }
     setLoadingProducts(false);
   };
 
   const fetchOrders = async () => {
-    const { data, error } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching orders:", error);
-    } else {
+    try {
+      const data = await adminListOrders();
       setOrders(data || []);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
     }
     setLoadingOrders(false);
   };
@@ -113,33 +113,28 @@ const Admin = () => {
     };
 
     if (editingProduct) {
-      const { error } = await supabase
-        .from("products")
-        .update(productData)
-        .eq("id", editingProduct.id);
-
-      if (error) {
+      try {
+        await adminUpdateProduct(editingProduct.id, productData);
+        toast({ title: "Product updated successfully" });
+        fetchProducts();
+      } catch {
         toast({
           title: "Error",
           description: "Failed to update product.",
           variant: "destructive",
         });
-      } else {
-        toast({ title: "Product updated successfully" });
-        fetchProducts();
       }
     } else {
-      const { error } = await supabase.from("products").insert([productData]);
-
-      if (error) {
+      try {
+        await adminCreateProduct(productData);
+        toast({ title: "Product created successfully" });
+        fetchProducts();
+      } catch {
         toast({
           title: "Error",
           description: "Failed to create product.",
           variant: "destructive",
         });
-      } else {
-        toast({ title: "Product created successfully" });
-        fetchProducts();
       }
     }
 
@@ -163,52 +158,39 @@ const Admin = () => {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
-    const { error } = await supabase.from("products").delete().eq("id", id);
-
-    if (error) {
+    try {
+      await adminDeleteProduct(id);
+      toast({ title: "Product deleted successfully" });
+      fetchProducts();
+    } catch {
       toast({
         title: "Error",
         description: "Failed to delete product.",
         variant: "destructive",
       });
-    } else {
-      toast({ title: "Product deleted successfully" });
-      fetchProducts();
     }
   };
 
   const toggleProductStatus = async (product: Product) => {
-    const { error } = await supabase
-      .from("products")
-      .update({ is_active: !product.is_active })
-      .eq("id", product.id);
-
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update product status.",
-        variant: "destructive",
-      });
-    } else {
+    try {
+      await adminToggleProductActive(product.id);
       fetchProducts();
+    } catch {
+      toast({ title: "Error", description: "Failed to update product status.", variant: "destructive" });
     }
   };
 
   const updateOrderStatus = async (orderId: string, status: string) => {
-    const { error } = await supabase
-      .from("orders")
-      .update({ status })
-      .eq("id", orderId);
-
-    if (error) {
+    try {
+      await adminUpdateOrderStatus(orderId, status);
+      toast({ title: "Order status updated" });
+      fetchOrders();
+    } catch {
       toast({
         title: "Error",
         description: "Failed to update order status.",
         variant: "destructive",
       });
-    } else {
-      toast({ title: "Order status updated" });
-      fetchOrders();
     }
   };
 
@@ -242,7 +224,7 @@ const Admin = () => {
       <header className="border-b border-border/50 px-6 py-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="text-2xl font-black tracking-tight text-primary">
+            <a href="/" className="text-2xl font-black tracking-tight text-[hsl(var(--sol-mark))]">
               SOL
             </a>
             <span className="text-sm text-muted-foreground">Admin Panel</span>
@@ -338,7 +320,7 @@ const Admin = () => {
                           }
                           required
                           className="bg-secondary/50"
-                          placeholder="e.g., Outerwear"
+                        placeholder="e.g., Serum"
                         />
                       </div>
                     </div>

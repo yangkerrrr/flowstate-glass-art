@@ -17,12 +17,12 @@ interface Product {
 }
 
 const products: Product[] = [
-  { id: 1, name: "Sol Hoodie", price: "$185", category: "Outerwear", accentColor: "from-stone-300/70 to-amber-200/50" },
-  { id: 2, name: "Dawn Tee", price: "$89", category: "Essentials", accentColor: "from-amber-200/70 to-stone-300/50" },
-  { id: 3, name: "Glow Pants", price: "$152", category: "Bottoms", accentColor: "from-stone-400/70 to-amber-100/50" },
-  { id: 4, name: "Radiant Jacket", price: "$280", category: "Outerwear", accentColor: "from-amber-100/70 to-stone-300/50" },
-  { id: 5, name: "Ember Shorts", price: "$95", category: "Bottoms", accentColor: "from-stone-300/70 to-amber-200/50" },
-  { id: 6, name: "Zenith Cap", price: "$65", category: "Accessories", accentColor: "from-amber-200/70 to-stone-400/50" },
+  { id: 1, name: "AGE‑R Booster Pro", price: "$299", category: "Device", accentColor: "from-cyan-200/70 to-sky-100/60" },
+  { id: 2, name: "Zero Pore Pad", price: "$28", category: "Toner Pads", accentColor: "from-sky-200/70 to-cyan-100/60" },
+  { id: 3, name: "Red Serum", price: "$24", category: "Serum", accentColor: "from-rose-200/60 to-orange-100/50" },
+  { id: 4, name: "Collagen Jelly Cream", price: "$32", category: "Moisturizer", accentColor: "from-emerald-200/60 to-cyan-100/55" },
+  { id: 5, name: "Deep Vita C Capsule Cream", price: "$29", category: "Brightening", accentColor: "from-amber-200/60 to-yellow-100/60" },
+  { id: 6, name: "Cica Calming Mask", price: "$19", category: "Mask", accentColor: "from-emerald-200/60 to-teal-100/60" },
 ];
 
 const ProductShowcase = () => {
@@ -62,7 +62,7 @@ const ProductShowcase = () => {
 
   return (
     <section
-      id="collection"
+      id="products"
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
@@ -90,16 +90,16 @@ const ProductShowcase = () => {
           }`}
         >
           <div>
-            <span className="text-primary text-sm uppercase tracking-widest">Featured</span>
+            <span className="text-primary text-sm uppercase tracking-widest">Medicube</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-2">
-              Current <span className="text-muted-foreground">Collection</span>
+              Featured <span className="text-muted-foreground">picks</span>
             </h2>
           </div>
           <Link
             to="/shop"
             className="hidden md:inline-flex text-sm text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
           >
-            View All →
+            Shop all →
           </Link>
         </div>
       </div>

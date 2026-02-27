@@ -162,7 +162,7 @@ const AdminSetup = () => {
             <Shield className="w-8 h-8 text-primary" />
           </div>
           <a href="/" className="inline-block">
-            <span className="text-3xl font-black tracking-tight text-primary">SOL</span>
+            <span className="text-3xl font-black tracking-tight text-[hsl(var(--sol-mark))]">SOL</span>
           </a>
           <h1 className="text-2xl font-bold mt-4">Admin Setup</h1>
           <p className="text-muted-foreground mt-2">

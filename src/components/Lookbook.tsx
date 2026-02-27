@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const looks = [
-  { id: 1, title: "Urban Flow", season: "SL26", color: "from-slate-400/50 to-zinc-500/30" },
-  { id: 2, title: "Night Drift", season: "SL26", color: "from-stone-400/50 to-neutral-500/30" },
-  { id: 3, title: "Dawn Motion", season: "SL26", color: "from-zinc-400/50 to-slate-500/30" },
+  { id: 1, title: "Morning Reset", season: "Routine", color: "from-cyan-200/60 to-sky-200/35" },
+  { id: 2, title: "Night Repair", season: "Routine", color: "from-sky-200/55 to-emerald-200/30" },
+  { id: 3, title: "Pore Care", season: "Routine", color: "from-emerald-200/55 to-cyan-200/30" },
 ];
 
 const Lookbook = () => {
@@ -18,7 +18,7 @@ const Lookbook = () => {
       { threshold: 0.2 }
     );
 
-    sectionRef.current && observer.observe(sectionRef.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -36,7 +36,7 @@ const Lookbook = () => {
 
   return (
     <section
-      id="lookbook"
+      id="routines"
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
@@ -59,9 +59,9 @@ const Lookbook = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="text-primary text-sm uppercase tracking-widest">Gallery</span>
+          <span className="text-primary text-sm uppercase tracking-widest">Guides</span>
           <h2 className="text-4xl md:text-5xl font-bold mt-2">
-            Look<span className="text-muted-foreground">book</span>
+            Skin<span className="text-muted-foreground">care routines</span>
           </h2>
         </div>
 

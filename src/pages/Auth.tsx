@@ -85,7 +85,7 @@ const Auth = () => {
       <div className="liquid-glass p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/" className="inline-block">
-            <span className="text-3xl font-black tracking-tight text-primary">SOL</span>
+            <span className="text-3xl font-black tracking-tight text-[hsl(var(--sol-mark))]">SOL</span>
           </a>
           <h1 className="text-2xl font-bold mt-4">
             {isLogin ? "Welcome back" : "Create account"}
@@ -93,7 +93,7 @@ const Auth = () => {
           <p className="text-muted-foreground mt-2">
             {isLogin
               ? "Sign in to your account"
-              : "Join the SOL community"}
+              : "Create an account to track your orders"}
           </p>
         </div>
 

@@ -6,11 +6,13 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-1 mb-4">
-              <span className="text-3xl font-black tracking-tight text-primary">SOL</span>
+              <span className="text-3xl font-black tracking-tight text-[hsl(var(--sol-mark))]">SOL</span>
             </div>
             <p className="text-muted-foreground text-sm max-w-xs">
-              Minimal design. Maximum impact. Crafted for those who
-              define their own style.
+              Medicube certified reseller—authentic products, secure checkout, and trackable delivery.
+            </p>
+            <p className="text-muted-foreground text-xs max-w-sm mt-4 leading-relaxed">
+              Medicube® is a trademark of its respective owner. This store is independently operated and is not the official Medicube website.
             </p>
           </div>
 
@@ -20,13 +22,18 @@ const Footer = () => {
               Navigate
             </h4>
             <ul className="space-y-2">
-              {["Collection", "About", "Lookbook", "Sizing"].map((item) => (
-                <li key={item}>
+              {[
+                { label: "Products", href: "#products" },
+                { label: "Why Us", href: "#why-us" },
+                { label: "Routines", href: "#routines" },
+                { label: "Shop", href: "/shop" },
+              ].map((item) => (
+                <li key={item.href}>
                   <a
-                    href={`#${item.toLowerCase()}`}
+                    href={item.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -39,7 +46,7 @@ const Footer = () => {
               Connect
             </h4>
             <ul className="space-y-2">
-              {["Instagram", "Twitter", "Discord"].map((item) => (
+              {["Support", "Shipping", "Returns"].map((item) => (
                 <li key={item}>
                   <a
                     href="#"
@@ -56,7 +63,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2026 yingnetwork. All rights reserved.
+            © 2026 SOL. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Shipping"].map((item) => (

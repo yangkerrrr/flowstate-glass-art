@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
+import { listActiveProducts } from "@/integrations/db/client";
 
 interface Product {
   id: string;
@@ -26,16 +26,11 @@ const Shop = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching products:", error);
-      } else {
+      try {
+        const data = await listActiveProducts();
         setProducts(data || []);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
       setLoading(false);
     };
@@ -77,7 +72,7 @@ const Shop = () => {
           <div className="mb-12">
             <span className="text-primary text-sm uppercase tracking-widest">Shop</span>
             <h1 className="text-4xl md:text-5xl font-bold mt-2">
-              Our <span className="text-muted-foreground">Collection</span>
+              Medicube <span className="text-muted-foreground">products</span>
             </h1>
           </div>
 

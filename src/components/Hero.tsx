@@ -1,6 +1,7 @@
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import HoodieModel from "./HoodieModel";
+import { ShieldCheck, Truck, BadgeCheck } from "lucide-react";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -42,14 +43,14 @@ const Hero = () => {
         <div 
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-transform duration-700 ease-out"
           style={{
-            background: 'radial-gradient(circle, hsl(220 20% 50% / 0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsl(205 80% 52% / 0.12) 0%, transparent 70%)',
             transform: `translateY(${scrollProgress * 100 + mousePosition.y * 20}px) translateX(${mousePosition.x * 15}px)`,
           }}
         />
         <div 
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl transition-transform duration-700 ease-out"
           style={{
-            background: 'radial-gradient(circle, hsl(45 25% 75% / 0.06) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsl(198 92% 85% / 0.22) 0%, transparent 70%)',
             transform: `translateY(${scrollProgress * 50 + mousePosition.y * -15}px) translateX(${mousePosition.x * -20}px)`,
           }}
         />
@@ -87,9 +88,9 @@ const Hero = () => {
         <div 
           className="absolute top-[60%] right-[8%] w-10 h-10 rounded-full opacity-60 transition-transform duration-500 ease-out"
           style={{ 
-            background: 'linear-gradient(135deg, hsl(45 25% 90% / 0.7), hsl(220 15% 80% / 0.5))',
+            background: 'linear-gradient(135deg, hsl(198 92% 92% / 0.9), hsl(200 84% 34% / 0.20))',
             transform: `translateY(${-scrollProgress * 90 + mousePosition.y * -8}px) translateX(${mousePosition.x * 6}px)`,
-            boxShadow: '0 8px 32px hsl(45 25% 90% / 0.2)'
+            boxShadow: '0 10px 32px hsl(222 47% 11% / 0.10)'
           }}
         />
 
@@ -121,7 +122,7 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "100ms" }}
               >
-                Premium Apparel
+                <span className="text-[hsl(var(--sol-mark))]">SOL</span> • Medicube Certified Reseller
               </div>
 
               {/* Main headline */}
@@ -131,11 +132,11 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "200ms" }}
               >
-                <span className="text-gradient">Define</span>
+                <span className="text-gradient">Clinic‑grade</span>
                 <br />
-                <span className="text-foreground">Your</span>
+                <span className="text-foreground">Medicube</span>
                 <br />
-                <span className="text-muted-foreground">Style</span>
+                <span className="text-muted-foreground">favorites</span>
               </h1>
 
               {/* Subheadline */}
@@ -145,8 +146,7 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "300ms" }}
               >
-                Minimal design. Maximum warmth. Apparel crafted for those who
-                shine from within.
+                Authentic Medicube products, fast shipping, and friendly support—so your routine stays consistent.
               </p>
 
               {/* CTAs with liquid glass style */}
@@ -156,33 +156,70 @@ const Hero = () => {
                 }`}
                 style={{ transitionDelay: "400ms" }}
               >
-                <Button variant="hero" size="lg">
-                  Explore Collection
+                <Button asChild variant="hero" size="lg">
+                  <Link to="/shop">Shop Medicube</Link>
                 </Button>
-                <Button variant="hero-outline" size="lg">
-                  Our Philosophy
-                </Button>
+                <a href="#why-us">
+                  <Button variant="hero-outline" size="lg">
+                    Why buy from us
+                  </Button>
+                </a>
               </div>
             </div>
 
-            {/* Right - 3D Model */}
+            {/* Right - Trust card */}
             <div 
-              className="relative h-[450px] lg:h-[500px]"
+              className="relative h-[450px] lg:h-[500px] flex items-center justify-center"
               style={{
                 transform: `translateY(${-scrollProgress * 50}px)`,
               }}
             >
-              <Suspense fallback={
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-32 h-32 liquid-glass rounded-3xl animate-pulse" />
-                </div>
-              }>
-                <HoodieModel scrollProgress={scrollProgress} />
-              </Suspense>
+              <div className="w-full max-w-md">
+                <div className="liquid-glass p-8 rounded-3xl">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-xs uppercase tracking-widest text-primary flex items-center gap-2">
+                        <BadgeCheck className="w-4 h-4" />
+                        Certified reseller
+                      </div>
+                      <h3 className="text-2xl font-bold mt-3">Shop with confidence</h3>
+                    </div>
+                    <div className="liquid-glass-pill px-4 py-2 text-xs text-muted-foreground">
+                      Authentic inventory
+                    </div>
+                  </div>
 
-              {/* Decorative elements around 3D model */}
-              <div className="absolute -bottom-4 -left-4 w-20 h-20 liquid-glass rounded-2xl opacity-60 float" />
-              <div className="absolute top-10 -right-4 w-12 h-12 liquid-glass rounded-full opacity-40 float-delayed" />
+                  <div className="mt-6 space-y-4">
+                    <div className="flex gap-3">
+                      <ShieldCheck className="w-5 h-5 text-primary mt-0.5" />
+                      <div>
+                        <div className="font-medium text-foreground">Authentic Medicube products</div>
+                        <div className="text-sm text-muted-foreground">Sourced and sold as a certified reseller.</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <Truck className="w-5 h-5 text-primary mt-0.5" />
+                      <div>
+                        <div className="font-medium text-foreground">Fast, trackable shipping</div>
+                        <div className="text-sm text-muted-foreground">Order updates from checkout to delivery.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Button asChild variant="hero" size="sm">
+                      <Link to="/shop">Browse products</Link>
+                    </Button>
+                    <a href="#products">
+                      <Button variant="hero-outline" size="sm">Best sellers</Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Decorative elements around card */}
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 liquid-glass rounded-2xl opacity-50 float" />
+              <div className="absolute top-10 -right-4 w-12 h-12 liquid-glass rounded-full opacity-35 float-delayed" />
             </div>
           </div>
         </div>

@@ -17,8 +17,8 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         // Flowstate custom variants
         glass: "glass glass-glow rounded-full border-0 text-foreground hover:scale-105",
-        hero: "bg-primary text-primary-foreground rounded-full font-semibold tracking-wide hover:shadow-[0_0_30px_hsl(200_100%_70%/0.4)] hover:scale-105",
-        "hero-outline": "glass rounded-full text-foreground border border-primary/30 hover:border-primary/60 hover:shadow-[0_0_20px_hsl(200_100%_70%/0.2)]",
+        hero: "bg-primary text-primary-foreground rounded-full font-semibold tracking-wide hover:shadow-[0_0_26px_hsl(var(--primary)/0.22)] hover:scale-105",
+        "hero-outline": "glass rounded-full text-foreground border border-primary/30 hover:border-primary/60 hover:shadow-[0_0_18px_hsl(var(--primary)/0.12)]",
       },
       size: {
         default: "h-10 px-6 py-2",

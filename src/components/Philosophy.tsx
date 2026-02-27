@@ -37,7 +37,7 @@ const Philosophy = () => {
 
   return (
     <section
-      id="about"
+      id="why-us"
       ref={sectionRef}
       className="py-32 relative overflow-hidden"
     >
@@ -85,13 +85,13 @@ const Philosophy = () => {
               <div className="absolute top-12 left-12 w-64 h-80 liquid-glass rounded-3xl transform -rotate-6 opacity-40" />
               <div className="absolute top-6 left-6 w-64 h-80 liquid-glass rounded-3xl transform rotate-3 opacity-60" />
               <div className="absolute top-0 left-0 w-64 h-80 liquid-glass rounded-3xl flex flex-col items-center justify-center p-8">
-                <div className="text-6xl text-primary mb-4 font-light">∞</div>
+                <div className="text-6xl text-primary mb-4 font-light">✓</div>
                 <div className="text-sm text-center text-muted-foreground">
-                  Timeless Design
+                  Verified shopping
                 </div>
                 <div className="mt-8 w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                 <div className="mt-8 text-xs text-muted-foreground text-center leading-relaxed">
-                  Where simplicity meets sophistication
+                  Authentic products and a smooth checkout experience
                 </div>
               </div>
 
@@ -102,8 +102,8 @@ const Philosophy = () => {
               >
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-slate-300/60 to-stone-400/40" />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 text-right">
-                  <div className="text-lg font-bold text-foreground">2026</div>
-                  <div className="text-xs text-muted-foreground">Collection</div>
+                  <div className="text-lg font-bold text-foreground">Certified</div>
+                  <div className="text-xs text-muted-foreground">Reseller</div>
                 </div>
               </div>
 
@@ -118,35 +118,29 @@ const Philosophy = () => {
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
             }`}
           >
-            <span className="text-primary text-sm uppercase tracking-widest">About</span>
+            <span className="text-primary text-sm uppercase tracking-widest">Why us</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-2 mb-8">
-              Our <span className="text-muted-foreground">Philosophy</span>
+              Shop <span className="text-muted-foreground">with trust</span>
             </h2>
 
             <div className="space-y-6 text-muted-foreground leading-relaxed">
               <p>
-                SOL exists at the intersection of minimalism and
-                contemporary streetwear. We believe clothing should make
-                a statement through subtlety.
+                We’re a Medicube certified reseller focused on authenticity, reliability, and an easy experience—from product discovery to delivery.
               </p>
               <p>
-                Each piece is designed with intention—every seam, every cut,
-                every detail serves a purpose. We strip away the unnecessary
-                to reveal what matters: form that follows function.
+                Every order is processed with care and supported by real people. You’ll get trackable shipping, secure checkout, and clear updates along the way.
               </p>
               <p>
-                No excess. No compromise. Just pure design. Our garments
-                speak for themselves, allowing you to define your own
-                narrative.
+                Medicube® is a trademark of its respective owner. This store is independently operated.
               </p>
             </div>
 
             {/* Stats in liquid glass pills */}
             <div className="grid grid-cols-3 gap-4 mt-12">
               {[
-                { value: "100%", label: "Cotton", color: "from-slate-400/40 to-stone-500/30" },
-                { value: "Zero", label: "Waste", color: "from-zinc-400/40 to-slate-500/30" },
-                { value: "∞", label: "Quality", color: "from-stone-400/40 to-zinc-500/30" },
+                { value: "Certified", label: "Reseller", color: "from-cyan-200/60 to-sky-200/40" },
+                { value: "Trackable", label: "Shipping", color: "from-sky-200/60 to-emerald-200/40" },
+                { value: "Secure", label: "Checkout", color: "from-emerald-200/60 to-cyan-200/40" },
               ].map((stat, index) => (
                 <div
                   key={stat.label}
