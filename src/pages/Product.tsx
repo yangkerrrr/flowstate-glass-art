@@ -1,18 +1,24 @@
 import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+// using manual fetch instead of react-query for simplicity
 import { getProduct } from "@/integrations/db/client";
 import { useCart } from "@/hooks/useCart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
   const { addItem } = useCart();
 
-  const { data: product, isLoading, error } = useQuery(
-    ["product", id],
-    () => getProduct(id!),
-    { enabled: !!id }
-  );
+  const [product, setProduct] = useState<Awaited<ReturnType<typeof getProduct>> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+    setIsLoading(true);
+    getProduct(id)
+      .then((p) => setProduct(p))
+      .catch((e) => console.error("Failed to load product", e))
+      .finally(() => setIsLoading(false));
+  }, [id]);
 
   if (isLoading) {
     return (

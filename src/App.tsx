@@ -1,7 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
@@ -16,7 +15,6 @@ import AdminSetup from "./pages/AdminSetup";
 import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
 
 // Separate component to use hooks inside Router context
 function AppRoutes() {
@@ -39,8 +37,7 @@ function AppRoutes() {
 }
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
+  <AuthProvider>
       <CartProvider>
         <TooltipProvider>
           <Toaster />
@@ -51,7 +48,6 @@ const App = () => (
         </TooltipProvider>
       </CartProvider>
     </AuthProvider>
-  </QueryClientProvider>
 );
 
 export default App;
