@@ -140,50 +140,38 @@ const ProductShowcase = () => {
                 className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <div
-                  className={`group cursor-pointer transition-all duration-700 ${
+                  className={`transition-all duration-700 ${
                     isVisible
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-12"
                   }`}
                   style={{ transitionDelay: `${index * 100 + 200}ms` }}
                 >
-                  {/* Product card with liquid glass style */}
-                  <div className="liquid-glass h-80 flex flex-col justify-between p-6 transition-all duration-500 group-hover:scale-[1.02]">
-                    {/* Image or placeholder */}
-                    <div className="flex-1 flex items-center justify-center relative">
+                  <Link
+                    to={`/product/${product.id}`}
+                    className="block group"
+                  >
+                    <div className="p-4 bg-white rounded-lg shadow hover:shadow-lg transition">
                       {product.imageUrl ? (
                         <img
                           src={product.imageUrl}
                           alt={product.name}
-                          className="max-h-full object-contain"
+                          className="w-full h-40 object-contain mb-4"
                         />
                       ) : (
-                        <div
-                          className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${product.accentColor} flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}
-                        >
-                          <span className="text-2xl font-bold text-foreground/90">
+                        <div className="h-40 bg-gray-100 flex items-center justify-center mb-4">
+                          <span className="text-3xl font-bold text-foreground/70">
                             {product.name.charAt(0)}
                           </span>
                         </div>
                       )}
 
-                      {/* Floating accent ring */}
-                      <div className="absolute w-28 h-28 rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110" />
-                    </div>
-
-                    {/* Product info */}
-                    <div className="space-y-2">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                        {product.category}
-                      </span>
-                      <div className="flex items-baseline justify-between">
-                        <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                          {product.name}
-                        </h3>
-                      </div>
+                      <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
+                        {product.name}
+                      </h3>
                       <p className="text-primary font-medium">{`$${product.price}`}</p>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </CarouselItem>
             ))}

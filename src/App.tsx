@@ -13,6 +13,7 @@ import OrderSuccess from "./pages/OrderSuccess";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import AdminSetup from "./pages/AdminSetup";
+import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ function AppRoutes() {
       <Route path="/auth" element={<Auth />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/setup" element={<AdminSetup />} />
+      <Route path="/product/:id" element={<Product />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>

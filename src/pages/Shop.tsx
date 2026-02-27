@@ -90,8 +90,9 @@ const Shop = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product) => (
-                <div
+                <Link
                   key={product.id}
+                  to={`/product/${product.id}`}
                   className="group liquid-glass overflow-hidden flex flex-col"
                 >
                   {/* Product image/placeholder */}
@@ -135,13 +136,16 @@ const Shop = () => {
                       <Button
                         variant="hero"
                         size="sm"
-                        onClick={() => handleAddToCart(product)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleAddToCart(product);
+                        }}
                       >
                         Add to Cart
                       </Button>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

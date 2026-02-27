@@ -73,6 +73,22 @@ export async function adminListProducts(): Promise<ProductRow[]> {
   return (data ?? []) as ProductRow[];
 }
 
+/**
+ * Fetch a single product by id. Returns `null` if not found.
+ */
+export async function getProduct(id: string): Promise<ProductRow | null> {
+  if (getProvider() === "neon") {
+    return await fetchJson<ProductRow>(`/products/${id}`);
+  }
+
+  const { data, error } = await supabase.from("products").select("*").eq("id", id).single();
+  if (error && error.code !== "PGRST116") {
+    // PGRST116 = no rows found; treat as null
+    throw error;
+  }
+  return data;
+}
+
 export async function adminCreateProduct(input: Omit<ProductRow, "id" | "is_active">): Promise<ProductRow | null> {
   if (getProvider() === "neon") {
     return await fetchJson<ProductRow | null>("/admin/products", {
