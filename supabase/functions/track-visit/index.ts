@@ -37,7 +37,7 @@ serve(async (req) => {
     const discordPayload = {
       embeds: [
         {
-          title: "🌐 New Website Visit",
+          title: "🌐 SOl apperal visit",
           color: 0xf5f0e8, // Off-white color matching site theme
           fields: [
             {
