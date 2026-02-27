@@ -8,27 +8,47 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import { listActiveProducts, ProductRow } from "@/integrations/db/client";
+
 interface Product {
-  id: number;
+  id: string;
   name: string;
-  price: string;
+  price: number;
   category: string;
-  accentColor: string;
+  accentColor: string | null;
+  imageUrl?: string | null;
 }
 
-const products: Product[] = [
-  { id: 1, name: "AGE‑R Booster Pro", price: "$299", category: "Device", accentColor: "from-cyan-200/70 to-sky-100/60" },
-  { id: 2, name: "Zero Pore Pad", price: "$28", category: "Toner Pads", accentColor: "from-sky-200/70 to-cyan-100/60" },
-  { id: 3, name: "Red Serum", price: "$24", category: "Serum", accentColor: "from-rose-200/60 to-orange-100/50" },
-  { id: 4, name: "Collagen Jelly Cream", price: "$32", category: "Moisturizer", accentColor: "from-emerald-200/60 to-cyan-100/55" },
-  { id: 5, name: "Deep Vita C Capsule Cream", price: "$29", category: "Brightening", accentColor: "from-amber-200/60 to-yellow-100/60" },
-  { id: 6, name: "Cica Calming Mask", price: "$19", category: "Mask", accentColor: "from-emerald-200/60 to-teal-100/60" },
-];
+// products now fetched from the database instead of being hardcoded
+
 
 const ProductShowcase = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // fetch active products on mount
+    (async () => {
+      try {
+        const data = await listActiveProducts();
+        // transform rows to frontend-friendly shape
+        setProducts(
+          data.map((p) => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            category: p.category,
+            accentColor: p.accent_color ?? "from-slate-200/50 to-gray-100/50",
+            imageUrl: p.image_url,
+          }))
+        );
+      } catch (e) {
+        console.error("Failed to load products for carousel", e);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -129,15 +149,24 @@ const ProductShowcase = () => {
                 >
                   {/* Product card with liquid glass style */}
                   <div className="liquid-glass h-80 flex flex-col justify-between p-6 transition-all duration-500 group-hover:scale-[1.02]">
-                    {/* Visual placeholder with colored accent */}
+                    {/* Image or placeholder */}
                     <div className="flex-1 flex items-center justify-center relative">
-                      {/* Inner pill with color */}
-                      <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${product.accentColor} flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}>
-                        <span className="text-2xl font-bold text-foreground/90">
-                          {product.name.charAt(0)}
-                        </span>
-                      </div>
-                      
+                      {product.imageUrl ? (
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="max-h-full object-contain"
+                        />
+                      ) : (
+                        <div
+                          className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${product.accentColor} flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}
+                        >
+                          <span className="text-2xl font-bold text-foreground/90">
+                            {product.name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+
                       {/* Floating accent ring */}
                       <div className="absolute w-28 h-28 rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110" />
                     </div>
@@ -152,7 +181,7 @@ const ProductShowcase = () => {
                           {product.name}
                         </h3>
                       </div>
-                      <p className="text-primary font-medium">{product.price}</p>
+                      <p className="text-primary font-medium">{`$${product.price}`}</p>
                     </div>
                   </div>
                 </div>

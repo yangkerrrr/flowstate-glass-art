@@ -91,7 +91,9 @@ const Navigation = () => {
                 </Button>
               )}
               <button
-                onClick={signOut}
+                onClick={async () => {
+                  await signOut(true);
+                }}
                 className="p-2 hover:bg-secondary/50 rounded-full transition-colors"
                 title="Sign out"
               >
@@ -170,7 +172,13 @@ const Navigation = () => {
                             </Link>
                           </Button>
                         )}
-                        <button onClick={() => { signOut(); setMobileOpen(false); }} className="p-2 hover:bg-secondary/50 rounded-full">
+                        <button
+                          onClick={async () => {
+                            await signOut(true);
+                            setMobileOpen(false);
+                          }}
+                          className="p-2 hover:bg-secondary/50 rounded-full"
+                        >
                           <LogOut className="w-4 h-4 text-muted-foreground" />
                         </button>
                       </div>

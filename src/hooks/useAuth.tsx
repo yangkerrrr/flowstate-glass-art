@@ -85,9 +85,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
+  /**
+   * Sign the current user out.
+   *
+   * @param redirect   if true the browser will navigate to the home page after
+   *                   the logout process. Defaults to true.
+   */
+  const signOut = async (redirect = true) => {
+    // ensure we wait for the sign-out request and clear any stored session data
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Error during sign out:", error);
+      }
+    } catch (err) {
+      console.error("Unexpected signOut error:", err);
+    }
+
+    // always clear local state regardless of network result
+    setUser(null);
+    setSession(null);
     setIsAdmin(false);
+
+    // supabase stores auth info in localStorage under a fixed key
+    try {
+      localStorage.removeItem("supabase.auth.token");
+    } catch {}
+
+    if (redirect) {
+      window.location.href = "/";
+    }
   };
 
   return (
