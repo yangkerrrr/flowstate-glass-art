@@ -3,7 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
-import { ShoppingBag, LogOut, User } from "lucide-react";
+import { ShoppingBag, LogOut, User, X } from "lucide-react";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -20,6 +21,7 @@ const Navigation = () => {
   }, []);
 
   const isHomePage = location.pathname === "/";
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <nav
@@ -111,10 +113,80 @@ const Navigation = () => {
           </Button>
 
           {/* Mobile Menu */}
-          <button className="md:hidden flex flex-col gap-1.5 p-2">
-            <span className="w-5 h-px bg-foreground" />
-            <span className="w-5 h-px bg-foreground" />
-          </button>
+          <div className="md:hidden">
+            <Drawer open={mobileOpen} onOpenChange={setMobileOpen}>
+              <DrawerTrigger asChild>
+                <button aria-label="Open menu" className="flex flex-col gap-1.5 p-2">
+                  <span className="w-5 h-px bg-foreground" />
+                  <span className="w-5 h-px bg-foreground" />
+                </button>
+              </DrawerTrigger>
+
+              <DrawerContent>
+                <div className="p-4">
+                  <div className="flex items-center justify-between">
+                    <Link to="/" onClick={() => setMobileOpen(false)} className="text-lg font-black">
+                      SOL
+                    </Link>
+                    <button onClick={() => setMobileOpen(false)} aria-label="Close menu" className="p-2">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <nav className="mt-4 flex flex-col gap-3">
+                    {isHomePage ? (
+                      [
+                        { label: "Products", href: "#products" },
+                        { label: "Why Us", href: "#why-us" },
+                        { label: "Routines", href: "#routines" },
+                      ].map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-base text-foreground/90"
+                        >
+                          {item.label}
+                        </a>
+                      ))
+                    ) : (
+                      <Link to="/" onClick={() => setMobileOpen(false)} className="text-base text-foreground/90">
+                        Home
+                      </Link>
+                    )}
+                  </nav>
+
+                  <div className="mt-6 flex flex-col gap-3">
+                    <Link to="/shop" onClick={() => setMobileOpen(false)} className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+                      Shop Medicube
+                    </Link>
+
+                    {user ? (
+                      <div className="flex items-center gap-2">
+                        {isAdmin && (
+                          <Button asChild variant="outline" size="sm">
+                            <Link to="/admin" onClick={() => setMobileOpen(false)}>
+                              Admin
+                            </Link>
+                          </Button>
+                        )}
+                        <button onClick={() => { signOut(); setMobileOpen(false); }} className="p-2 hover:bg-secondary/50 rounded-full">
+                          <LogOut className="w-4 h-4 text-muted-foreground" />
+                        </button>
+                      </div>
+                    ) : (
+                      <Button asChild variant="outline" size="sm">
+                        <Link to="/auth" onClick={() => setMobileOpen(false)}>
+                          <User className="w-4 h-4 mr-2" />
+                          Sign In
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          </div>
         </div>
       </div>
     </nav>
