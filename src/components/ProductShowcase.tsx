@@ -88,15 +88,15 @@ const ProductShowcase = () => {
     >
       {/* Floating background decorations with enhanced parallax */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div 
+        <div
           className="absolute -top-20 right-[20%] w-40 h-20 liquid-glass-pill opacity-30"
           style={{ transform: `translateY(${scrollProgress * 120}px) rotate(${-10 + scrollProgress * 15}deg)` }}
         />
-        <div 
+        <div
           className="absolute bottom-40 left-[10%] w-24 h-24 liquid-glass rounded-full opacity-20"
           style={{ transform: `translateY(${-scrollProgress * 100}px) scale(${1 + scrollProgress * 0.15})` }}
         />
-        <div 
+        <div
           className="absolute top-1/3 right-[5%] w-16 h-16 liquid-glass rounded-2xl opacity-25"
           style={{ transform: `translateY(${scrollProgress * 80}px) rotate(${45 + scrollProgress * 30}deg)` }}
         />
@@ -105,9 +105,8 @@ const ProductShowcase = () => {
       {/* Section header */}
       <div className="container mx-auto px-6 mb-12">
         <div
-          className={`flex items-end justify-between transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`flex items-end justify-between transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           <div>
             <span className="text-primary text-sm uppercase tracking-widest">Medicube</span>
@@ -140,36 +139,37 @@ const ProductShowcase = () => {
                 className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <div
-                  className={`transition-all duration-700 ${
-                    isVisible
+                  className={`transition-all duration-700 ${isVisible
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-12"
-                  }`}
+                    }`}
                   style={{ transitionDelay: `${index * 100 + 200}ms` }}
                 >
                   <Link
                     to={`/product/${product.id}`}
                     className="block group"
                   >
-                    <div className="p-4 bg-white rounded-lg shadow hover:shadow-lg transition">
+                    <div className="p-4 liquid-glass rounded-xl shadow-lg border border-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                       {product.imageUrl ? (
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="w-full h-40 object-contain mb-4"
-                        />
+                        <div className="relative aspect-square w-full mb-4 overflow-hidden rounded-lg bg-gradient-to-br from-slate-100 to-white flex items-center justify-center p-4">
+                          <img
+                            src={product.imageUrl}
+                            alt={product.name}
+                            className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
                       ) : (
-                        <div className="h-40 bg-gray-100 flex items-center justify-center mb-4">
-                          <span className="text-3xl font-bold text-foreground/70">
+                        <div className="aspect-square w-full bg-gradient-to-br from-slate-100 to-white rounded-lg flex items-center justify-center mb-4">
+                          <span className="text-3xl font-bold text-foreground/30">
                             {product.name.charAt(0)}
                           </span>
                         </div>
                       )}
 
-                      <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
+                      <h3 className="text-lg font-semibold mb-1 text-foreground group-hover:text-primary transition-colors">
                         {product.name}
                       </h3>
-                      <p className="text-primary font-medium">{`$${product.price}`}</p>
+                      <p className="text-muted-foreground font-medium">{`$${product.price}`}</p>
                     </div>
                   </Link>
                 </div>
@@ -177,8 +177,8 @@ const ProductShowcase = () => {
             ))}
           </CarouselContent>
           <div className="flex items-center justify-center gap-4 mt-8">
-            <CarouselPrevious className="relative inset-auto translate-x-0 translate-y-0 bg-secondary/50 border-border hover:bg-secondary" />
-            <CarouselNext className="relative inset-auto translate-x-0 translate-y-0 bg-secondary/50 border-border hover:bg-secondary" />
+            <CarouselPrevious className="glass" />
+            <CarouselNext className="glass" />
           </div>
         </Carousel>
       </div>
