@@ -109,12 +109,12 @@ const Product = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 py-32">
-        <Link to="/shop" className="text-sm text-muted-foreground hover:underline">
-          &larr; Back to shop
+      <div className="container mx-auto px-6 py-24 md:py-32 relative z-10">
+        <Link to="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1">
+          <span>&larr;</span> Back to shop
         </Link>
 
-        <div className="mt-12 flex flex-col md:flex-row gap-12 items-start">
+        <div className="mt-8 md:mt-12 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
           {/* product visuals */}
           <div className="md:w-1/2">
             {gallery.length > 0 ? (
@@ -123,13 +123,13 @@ const Product = () => {
                   {gallery.map((src, i) => (
                     <CarouselItem key={i} className="flex justify-center">
                       <div
-                        className={`relative w-full max-h-[500px] md:max-h-[600px] md:aspect-[4/5] liquid-glass rounded-2xl overflow-hidden flex items-center justify-center bg-gradient-to-br ${product.accent_color ?? "from-slate-200/50 to-gray-100/50"
-                          } p-6 shadow-xl border border-white/20`}
+                        className={`relative w-full aspect-square md:aspect-[4/5] max-h-[400px] md:max-h-[600px] liquid-glass rounded-2xl overflow-hidden flex items-center justify-center bg-gradient-to-br ${product.accent_color ?? "from-slate-200/50 to-gray-100/50"
+                          } p-4 md:p-6 shadow-xl border border-white/20`}
                       >
                         <img
                           src={src}
                           alt={`${product.name} ${i + 1}`}
-                          className="w-full h-full object-contain mix-blend-multiply drop-shadow-xl"
+                          className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl"
                         />
                       </div>
                     </CarouselItem>
@@ -157,7 +157,7 @@ const Product = () => {
               <div className="text-sm font-medium text-primary uppercase tracking-widest mb-2">
                 {product.category || "Medicube Essential"}
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
                 {product.name}
               </h1>
             </div>

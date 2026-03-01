@@ -40,14 +40,14 @@ const Hero = () => {
 
       {/* Layer 1 - Far background elements with parallax */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
+        <div
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-transform duration-700 ease-out"
           style={{
             background: 'radial-gradient(circle, hsl(205 80% 52% / 0.12) 0%, transparent 70%)',
             transform: `translateY(${scrollProgress * 100 + mousePosition.y * 20}px) translateX(${mousePosition.x * 15}px)`,
           }}
         />
-        <div 
+        <div
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl transition-transform duration-700 ease-out"
           style={{
             background: 'radial-gradient(circle, hsl(198 92% 85% / 0.22) 0%, transparent 70%)',
@@ -59,35 +59,35 @@ const Hero = () => {
       {/* Layer 2 - Floating glass decorations with enhanced dynamics */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Top left pill - floats with scroll & mouse */}
-        <div 
+        <div
           className="absolute top-32 left-[10%] w-24 h-12 liquid-glass-pill opacity-60 transition-transform duration-500 ease-out"
-          style={{ 
-            transform: `translateY(${scrollProgress * 80 + mousePosition.y * 10}px) translateX(${mousePosition.x * 8}px) rotate(${scrollProgress * 10 + mousePosition.x * 5}deg)` 
+          style={{
+            transform: `translateY(${scrollProgress * 80 + mousePosition.y * 10}px) translateX(${mousePosition.x * 8}px) rotate(${scrollProgress * 10 + mousePosition.x * 5}deg)`
           }}
         />
-        
+
         {/* Bottom right circle */}
-        <div 
+        <div
           className="absolute bottom-40 right-[15%] w-16 h-16 liquid-glass rounded-full opacity-50 transition-transform duration-600 ease-out"
-          style={{ 
-            transform: `translateY(${-scrollProgress * 60 + mousePosition.y * -12}px) translateX(${mousePosition.x * -10}px) scale(${1 + scrollProgress * 0.1})` 
+          style={{
+            transform: `translateY(${-scrollProgress * 60 + mousePosition.y * -12}px) translateX(${mousePosition.x * -10}px) scale(${1 + scrollProgress * 0.1})`
           }}
         />
 
         {/* Mid floating pill with accent */}
-        <div 
+        <div
           className="absolute top-1/2 left-[5%] w-32 h-14 liquid-glass-pill overflow-hidden opacity-40 transition-transform duration-700 ease-out"
-          style={{ 
-            transform: `translateY(${scrollProgress * 120 + mousePosition.y * 15}px) translateX(${mousePosition.x * 12}px)` 
+          style={{
+            transform: `translateY(${scrollProgress * 120 + mousePosition.y * 15}px) translateX(${mousePosition.x * 12}px)`
           }}
         >
           <div className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-primary/40 to-accent/30" />
         </div>
 
         {/* Small accent circle - off-white glow */}
-        <div 
+        <div
           className="absolute top-[60%] right-[8%] w-10 h-10 rounded-full opacity-60 transition-transform duration-500 ease-out"
-          style={{ 
+          style={{
             background: 'linear-gradient(135deg, hsl(198 92% 92% / 0.9), hsl(200 84% 34% / 0.20))',
             transform: `translateY(${-scrollProgress * 90 + mousePosition.y * -8}px) translateX(${mousePosition.x * 6}px)`,
             boxShadow: '0 10px 32px hsl(222 47% 11% / 0.10)'
@@ -95,31 +95,30 @@ const Hero = () => {
         />
 
         {/* New floating elements for depth */}
-        <div 
+        <div
           className="absolute top-[20%] right-[25%] w-6 h-6 liquid-glass rounded-full opacity-30 transition-transform duration-800 ease-out"
-          style={{ 
-            transform: `translateY(${scrollProgress * 150 + mousePosition.y * 25}px) translateX(${mousePosition.x * -18}px)` 
+          style={{
+            transform: `translateY(${scrollProgress * 150 + mousePosition.y * 25}px) translateX(${mousePosition.x * -18}px)`
           }}
         />
-        <div 
+        <div
           className="absolute bottom-[30%] left-[20%] w-20 h-8 liquid-glass-pill opacity-25 transition-transform duration-900 ease-out"
-          style={{ 
-            transform: `translateY(${-scrollProgress * 70 + mousePosition.y * -20}px) rotate(${-15 + scrollProgress * 20}deg)` 
+          style={{
+            transform: `translateY(${-scrollProgress * 70 + mousePosition.y * -20}px) rotate(${-15 + scrollProgress * 20}deg)`
           }}
         />
       </div>
 
       {/* Sticky content container */}
-      <div className="sticky top-0 h-screen flex items-center">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 min-h-screen flex items-center pt-24 pb-12 lg:sticky lg:top-0 lg:pt-0 lg:pb-0">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left - Content */}
             <div className="relative z-20">
               {/* Tagline */}
               <div
-                className={`text-sm text-primary mb-4 tracking-widest uppercase transition-all duration-700 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+                className={`text-sm text-primary mb-4 tracking-widest uppercase transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
                 style={{ transitionDelay: "100ms" }}
               >
                 <span className="text-[hsl(var(--sol-mark))]">SOL</span> • Medicube Certified Reseller
@@ -127,9 +126,8 @@ const Hero = () => {
 
               {/* Main headline */}
               <h1
-                className={`text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6 transition-all duration-700 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+                className={`text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.1] mb-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
                 style={{ transitionDelay: "200ms" }}
               >
                 <span className="text-gradient">Clinic‑grade</span>
@@ -141,9 +139,8 @@ const Hero = () => {
 
               {/* Subheadline */}
               <p
-                className={`text-lg text-muted-foreground max-w-md mb-10 transition-all duration-700 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+                className={`text-lg text-muted-foreground max-w-md mb-10 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
                 style={{ transitionDelay: "300ms" }}
               >
                 Authentic Medicube products, fast shipping, and friendly support—so your routine stays consistent.
@@ -151,9 +148,8 @@ const Hero = () => {
 
               {/* CTAs with liquid glass style */}
               <div
-                className={`flex flex-wrap gap-4 transition-all duration-700 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+                className={`flex flex-wrap gap-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
                 style={{ transitionDelay: "400ms" }}
               >
                 <Button asChild variant="hero" size="lg">
@@ -168,8 +164,8 @@ const Hero = () => {
             </div>
 
             {/* Right - Trust card */}
-            <div 
-              className="relative h-[450px] lg:h-[500px] flex items-center justify-center"
+            <div
+              className="relative h-auto lg:h-[500px] flex items-center justify-center mt-12 lg:mt-0"
               style={{
                 transform: `translateY(${-scrollProgress * 50}px)`,
               }}

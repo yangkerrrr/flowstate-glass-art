@@ -84,7 +84,7 @@ const ProductShowcase = () => {
     <section
       id="products"
       ref={sectionRef}
-      className="py-32 relative overflow-hidden"
+      className="py-16 md:py-32 relative overflow-hidden"
     >
       {/* Floating background decorations with enhanced parallax */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -140,8 +140,8 @@ const ProductShowcase = () => {
               >
                 <div
                   className={`transition-all duration-700 ${isVisible
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-12"
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-12"
                     }`}
                   style={{ transitionDelay: `${index * 100 + 200}ms` }}
                 >
