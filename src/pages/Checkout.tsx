@@ -39,7 +39,7 @@ const Checkout = () => {
   const paypalRef = useRef<HTMLDivElement>(null);
   const paypalButtonsRendered = useRef(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
-  
+
   // Use refs for shipping to avoid re-rendering PayPal on every keystroke
   const shippingRef = useRef({
     email: "",
@@ -49,7 +49,7 @@ const Checkout = () => {
     country: "",
     zip: "",
   });
-  
+
   const [shipping, setShipping] = useState({
     email: "",
     name: "",
@@ -69,11 +69,11 @@ const Checkout = () => {
   // Load PayPal SDK
   useEffect(() => {
     let scriptElement: HTMLScriptElement | null = null;
-    
+
     const loadPayPalScript = async () => {
       // Fetch client ID from edge function
       const { data, error } = await supabase.functions.invoke("get-paypal-client-id");
-      
+
       if (error || !data?.clientId) {
         console.error("Failed to get PayPal client ID:", error);
         return;
@@ -87,7 +87,7 @@ const Checkout = () => {
       }
 
       scriptElement = document.createElement("script");
-      scriptElement.src = `https://www.paypal.com/sdk/js?client-id=${data.clientId}&currency=USD`;
+      scriptElement.src = `https://www.paypal.com/sdk/js?client-id=${data.clientId}&currency=ZAR`;
       scriptElement.async = true;
       scriptElement.onload = () => setPaypalLoaded(true);
       document.body.appendChild(scriptElement);
@@ -245,7 +245,7 @@ const Checkout = () => {
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium truncate">{item.name}</h3>
                     <p className="text-primary font-semibold">
-                      ${item.price.toFixed(2)}
+                      R{item.price.toFixed(2)}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -276,7 +276,7 @@ const Checkout = () => {
               <div className="liquid-glass p-6">
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">${totalPrice.toFixed(2)}</span>
+                  <span className="text-primary">R{totalPrice.toFixed(2)}</span>
                 </div>
               </div>
             </div>

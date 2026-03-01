@@ -149,27 +149,29 @@ const ProductShowcase = () => {
                     to={`/product/${product.id}`}
                     className="block group"
                   >
-                    <div className="p-4 liquid-glass rounded-xl shadow-lg border border-white/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div className="p-4 liquid-glass rounded-[2rem] shadow-lg border border-white/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                       {product.imageUrl ? (
-                        <div className="relative aspect-square w-full mb-4 overflow-hidden rounded-lg bg-gradient-to-br from-slate-100 to-white flex items-center justify-center p-4">
+                        <div className="relative aspect-square w-full mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50/80 to-white/60 flex items-center justify-center p-6 border border-white/60">
                           <img
                             src={product.imageUrl}
                             alt={product.name}
-                            className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                            className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110 drop-shadow-md"
                           />
                         </div>
                       ) : (
-                        <div className="aspect-square w-full bg-gradient-to-br from-slate-100 to-white rounded-lg flex items-center justify-center mb-4">
+                        <div className="aspect-square w-full bg-gradient-to-br from-slate-50/80 to-white/60 rounded-3xl flex items-center justify-center mb-5 border border-white/60">
                           <span className="text-3xl font-bold text-foreground/30">
                             {product.name.charAt(0)}
                           </span>
                         </div>
                       )}
 
-                      <h3 className="text-lg font-semibold mb-1 text-foreground group-hover:text-primary transition-colors">
-                        {product.name}
-                      </h3>
-                      <p className="text-muted-foreground font-medium">{`$${product.price}`}</p>
+                      <div className="px-2">
+                        <h3 className="text-xl font-bold mb-1 text-foreground group-hover:text-primary transition-colors">
+                          {product.name}
+                        </h3>
+                        <p className="text-muted-foreground font-medium">{`R${product.price}`}</p>
+                      </div>
                     </div>
                   </Link>
                 </div>

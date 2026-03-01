@@ -171,7 +171,7 @@ const Hero = () => {
               }}
             >
               <div className="w-full max-w-md">
-                <div className="liquid-glass p-8 rounded-3xl">
+                <div className="liquid-glass p-8 md:p-10 rounded-[2.5rem]">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="text-xs uppercase tracking-widest text-primary flex items-center gap-2">

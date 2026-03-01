@@ -123,8 +123,8 @@ const Product = () => {
                   {gallery.map((src, i) => (
                     <CarouselItem key={i} className="flex justify-center">
                       <div
-                        className={`relative w-full aspect-square md:aspect-[4/5] max-h-[400px] md:max-h-[600px] liquid-glass rounded-2xl overflow-hidden flex items-center justify-center bg-gradient-to-br ${product.accent_color ?? "from-slate-200/50 to-gray-100/50"
-                          } p-4 md:p-6 shadow-xl border border-white/20`}
+                        className={`relative w-full aspect-square md:aspect-[4/5] max-h-[400px] md:max-h-[600px] liquid-glass rounded-[2.5rem] overflow-hidden flex items-center justify-center bg-gradient-to-br ${product.accent_color ?? "from-slate-50/80 to-white/60"
+                          } p-4 md:p-8 shadow-xl border border-white/60`}
                       >
                         <img
                           src={src}
@@ -162,13 +162,13 @@ const Product = () => {
               </h1>
             </div>
 
-            <div className="liquid-glass rounded-2xl p-6 md:p-8 border border-white/20 shadow-lg">
-              <div className="flex items-center justify-between mb-6">
-                <p className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                  ${product.price}
+            <div className="liquid-glass rounded-[2.5rem] p-6 md:p-10 border border-white/50 shadow-xl">
+              <div className="flex items-center justify-between mb-8">
+                <p className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                  R{product.price}
                 </p>
-                <div className="flex items-center gap-2 text-sm text-primary bg-primary/10 px-3 py-1.5 rounded-full">
-                  <BadgeCheck className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-sm font-semibold text-primary bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
+                  <BadgeCheck className="w-5 h-5" />
                   <span>In Stock</span>
                 </div>
               </div>
@@ -176,7 +176,7 @@ const Product = () => {
               <Button
                 variant="hero"
                 size="lg"
-                className="w-full text-lg h-14"
+                className="w-full text-lg h-16 rounded-full shadow-lg"
                 onClick={handleAdd}
               >
                 Add to Cart

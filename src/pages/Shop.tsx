@@ -54,10 +54,10 @@ const Shop = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Cart indicator */}
-      <Link 
-        to="/checkout" 
+      <Link
+        to="/checkout"
         className="fixed top-24 right-6 z-40 liquid-glass-pill p-3 flex items-center gap-2 hover:scale-105 transition-transform"
       >
         <ShoppingBag className="w-5 h-5 text-primary" />
@@ -105,9 +105,8 @@ const Shop = () => {
                       />
                     ) : (
                       <div
-                        className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${
-                          product.accent_color || "from-slate-300/70 to-stone-400/50"
-                        } flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}
+                        className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${product.accent_color || "from-slate-300/70 to-stone-400/50"
+                          } flex items-center justify-center transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}
                       >
                         <span className="text-3xl font-bold text-foreground/90">
                           {product.name.charAt(0)}
@@ -131,7 +130,7 @@ const Shop = () => {
                     )}
                     <div className="mt-auto pt-4 flex items-center justify-between">
                       <span className="text-xl font-bold text-primary">
-                        ${product.price.toFixed(2)}
+                        R{product.price.toFixed(2)}
                       </span>
                       <Button
                         variant="hero"

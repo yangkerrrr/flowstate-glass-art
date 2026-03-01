@@ -50,14 +50,14 @@ const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -261,7 +261,7 @@ const Admin = () => {
                     Add Product
                   </Button>
                 </DialogTrigger>
-                <DialogContent 
+                <DialogContent
                   className="bg-background border-border max-w-lg"
                   onOpenAutoFocus={(e) => e.preventDefault()}
                   onCloseAutoFocus={(e) => e.preventDefault()}
@@ -320,7 +320,7 @@ const Admin = () => {
                           }
                           required
                           className="bg-secondary/50"
-                        placeholder="e.g., Serum"
+                          placeholder="e.g., Serum"
                         />
                       </div>
                     </div>
@@ -371,7 +371,7 @@ const Admin = () => {
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold">{product.name}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {product.category} • ${product.price.toFixed(2)}
+                        {product.category} • R{product.price.toFixed(2)}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -431,7 +431,7 @@ const Admin = () => {
                       </div>
                       <div className="text-right">
                         <p className="text-xl font-bold text-primary">
-                          ${order.total_amount.toFixed(2)}
+                          R{order.total_amount.toFixed(2)}
                         </p>
                         <select
                           value={order.status || "pending"}
