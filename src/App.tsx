@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import { useVisitTracker } from "@/hooks/useVisitTracker";
+import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import Checkout from "./pages/Checkout";
@@ -63,6 +64,7 @@ const App = () => {
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>
+          <Analytics />
         </TooltipProvider>
       </CartProvider>
     </AuthProvider>
