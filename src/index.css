@@ -104,6 +104,25 @@
 
     border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+    /* Dynamic lighting variables */
+    --x: var(--mouse-x, 50%);
+    --y: var(--mouse-y, 50%);
+  }
+
+  /* Dynamic specular highlight sheen */
+  .liquid-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    /* Create a soft, radial glare tracking the mouse */
+    background: radial-gradient(800px circle at var(--x) var(--y),
+        rgba(255, 255, 255, 0.15),
+        transparent 40%);
+    z-index: 10;
+    transition: background 0.1s ease;
   }
 
   .liquid-glass:hover {
@@ -124,21 +143,22 @@
     inset: 0;
     border-radius: inherit;
     padding: 1.5px;
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.9),
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.5));
+    /* Base border with dynamic sheen overlap */
+    background: radial-gradient(600px circle at var(--x) var(--y),
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0.2) 40%,
+        rgba(255, 255, 255, 0.5) 100%);
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease, background 0.1s ease;
   }
 
   .liquid-glass:hover::before {
-    opacity: 0.8;
+    opacity: 1;
   }
 
   /* Pill-shaped liquid glass with shimmer */

@@ -139,41 +139,14 @@ const ProductShowcase = () => {
                 className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <div
-                  className={`transition-all duration-700 ${isVisible
+                  className={`transition-all duration-700 h-full ${isVisible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-12"
                     }`}
                   style={{ transitionDelay: `${index * 100 + 200}ms` }}
                 >
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="block group"
-                  >
-                    <div className="p-4 liquid-glass rounded-[2rem] shadow-lg border border-white/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                      {product.imageUrl ? (
-                        <div className="relative aspect-square w-full mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50/80 to-white/60 flex items-center justify-center p-6 border border-white/60">
-                          <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110 drop-shadow-md"
-                          />
-                        </div>
-                      ) : (
-                        <div className="aspect-square w-full bg-gradient-to-br from-slate-50/80 to-white/60 rounded-3xl flex items-center justify-center mb-5 border border-white/60">
-                          <span className="text-3xl font-bold text-foreground/30">
-                            {product.name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="px-2">
-                        <h3 className="text-xl font-bold mb-1 text-foreground group-hover:text-primary transition-colors">
-                          {product.name}
-                        </h3>
-                        <p className="text-muted-foreground font-medium">{`R${product.price}`}</p>
-                      </div>
-                    </div>
-                  </Link>
+                  {/* Card wrapper with perspective tilt effect */}
+                  <TiltCard product={product} />
                 </div>
               </CarouselItem>
             ))}
@@ -188,6 +161,71 @@ const ProductShowcase = () => {
       {/* Background element */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-primary/5 to-transparent blur-3xl pointer-events-none" />
     </section>
+  );
+};
+
+/* NEW SUB-COMPONENT FOR 3D TILT EFFECT */
+const TiltCard = ({ product }: { product: Product }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+
+    // Calculate mouse position relative to card center (-1 to 1)
+    const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+
+    // Max tilt angle is 8 degrees
+    setTilt({ x: -y * 8, y: x * 8 });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="perspective-container h-full group"
+    >
+      <Link to={`/product/${product.id}`} className="block h-full">
+        <div
+          className="p-4 liquid-glass rounded-[2rem] shadow-lg border border-white/40 transition-transform duration-200 ease-out h-full"
+          style={{
+            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {product.imageUrl ? (
+            <div className="relative aspect-square w-full mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50/80 to-white/60 flex items-center justify-center p-6 border border-white/60">
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110 drop-shadow-md"
+                style={{ transform: "translateZ(30px)" }}
+              />
+            </div>
+          ) : (
+            <div className="aspect-square w-full bg-gradient-to-br from-slate-50/80 to-white/60 rounded-3xl flex items-center justify-center mb-5 border border-white/60">
+              <span className="text-3xl font-bold text-foreground/30">
+                {product.name.charAt(0)}
+              </span>
+            </div>
+          )}
+
+          <div className="px-2" style={{ transform: "translateZ(20px)" }}>
+            <h3 className="text-xl font-bold mb-1 text-foreground group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            <p className="text-muted-foreground font-medium">{`R${product.price}`}</p>
+          </div>
+        </div>
+      </Link>
+    </div>
   );
 };
 

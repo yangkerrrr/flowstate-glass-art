@@ -2,13 +2,31 @@ import { useParams, Link } from "react-router-dom";
 // using manual fetch instead of react-query for simplicity
 import { getProduct } from "@/integrations/db/client";
 import { useCart } from "@/hooks/useCart";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, Truck, BadgeCheck } from "lucide-react";
+
+// Custom hook for 3D tilt effect on product gallery
+function useTilt() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    setTilt({ x: -y * 5, y: x * 5 }); // slightly less dramatic on large product image
+  };
+
+  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+
+  return { ref, tilt, handleMouseMove, handleMouseLeave };
+}
 
 const Product = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,7 +56,9 @@ const Product = () => {
     }
   }, [product]);
 
-  // scroll progress for decorative parallax
+  const tilt = useTilt();
+
+  // Scroll progress for decorative parallax
   useEffect(() => {
     const handleScroll = () => {
       const rect = document.body.getBoundingClientRect();
@@ -121,15 +141,23 @@ const Product = () => {
               <Carousel opts={{ align: "center", loop: true }} className="w-full">
                 <CarouselContent>
                   {gallery.map((src, i) => (
-                    <CarouselItem key={i} className="flex justify-center">
+                    <CarouselItem key={i} className="flex justify-center perspective-container">
                       <div
+                        ref={tilt.ref}
+                        onMouseMove={tilt.handleMouseMove}
+                        onMouseLeave={tilt.handleMouseLeave}
                         className={`relative w-full aspect-square md:aspect-[4/5] max-h-[400px] md:max-h-[600px] liquid-glass rounded-[2.5rem] overflow-hidden flex items-center justify-center bg-gradient-to-br ${product.accent_color ?? "from-slate-50/80 to-white/60"
-                          } p-4 md:p-8 shadow-xl border border-white/60`}
+                          } p-4 md:p-8 shadow-xl border border-white/60 transition-transform duration-200 ease-out`}
+                        style={{
+                          transform: `rotateX(${tilt.tilt.x}deg) rotateY(${tilt.tilt.y}deg)`,
+                          transformStyle: "preserve-3d",
+                        }}
                       >
                         <img
                           src={src}
                           alt={`${product.name} ${i + 1}`}
-                          className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl"
+                          className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl transition-transform duration-500 hover:scale-105"
+                          style={{ transform: "translateZ(40px)" }}
                         />
                       </div>
                     </CarouselItem>

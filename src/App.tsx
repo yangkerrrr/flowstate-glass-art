@@ -19,7 +19,7 @@ import NotFound from "./pages/NotFound";
 // Separate component to use hooks inside Router context
 function AppRoutes() {
   useVisitTracker();
-  
+
   return (
     <Routes>
       <Route path="/" element={<Index />} />
@@ -36,8 +36,26 @@ function AppRoutes() {
   );
 }
 
-const App = () => (
-  <AuthProvider>
+import { useEffect } from "react";
+
+const App = () => {
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate position relative to viewport (0-100%)
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+
+      // Update global CSS variables for liquid glass effect
+      document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+      document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  return (
+    <AuthProvider>
       <CartProvider>
         <TooltipProvider>
           <Toaster />
@@ -48,6 +66,7 @@ const App = () => (
         </TooltipProvider>
       </CartProvider>
     </AuthProvider>
-);
+  );
+};
 
 export default App;
